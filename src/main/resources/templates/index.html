@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Edition Shop</title>
+
+</head>
+<body>
+<div th:insert="fragments/navbar :: navbar"></div>
+
+<span th:text="#{main-page}"></span><br/>
+<span th:text="#{welcome}"></span><br/>
+
+<button type="button"
+        th:text="#{switch-en}"
+        onclick="window.location.href='?locale=en'"></button>
+<button type="button"
+        th:text="#{switch-ua}"
+        onclick="window.location.href='?locale=ua'">
+</button>
+<br/>
+
+<a href="/test">Test</a>
+
+</body>
+</html>
