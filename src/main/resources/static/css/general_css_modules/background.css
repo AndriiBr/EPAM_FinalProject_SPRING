@@ -1,0 +1,12 @@
+body {
+    background-color: hsl(0, 0%, 94%);
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    background-attachment: fixed;
+
+    overflow-x: hidden;
+
+    font-family: "Poppins", sans-serif;
+    height: 100vh;
+}

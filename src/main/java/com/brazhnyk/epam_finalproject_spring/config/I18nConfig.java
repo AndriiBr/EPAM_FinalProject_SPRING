@@ -16,13 +16,12 @@ public class I18nConfig {
 
     /**
      * Resolves the locale and stores it in a cookie stored on the user’s machine
-     *
      * @return resolver with default locale
      */
     @Bean
     public LocaleResolver localeResolver() {
         CookieLocaleResolver cookieLocaleResolver = new CookieLocaleResolver();
-        cookieLocaleResolver.setDefaultLocale(Locale.US);
+        cookieLocaleResolver.setDefaultLocale(Locale.ENGLISH);
 
         return cookieLocaleResolver;
     }
@@ -30,13 +29,12 @@ public class I18nConfig {
     /**
      * Intercept each request that the application receives,
      * and eagerly check for a localeData parameter on the HTTP request
-     *
      * @return Register the locale it found as the current user’s locale
      */
     @Bean
     public LocaleChangeInterceptor localeChangeInterceptor() {
         LocaleChangeInterceptor localeChangeInterceptor = new LocaleChangeInterceptor();
-        localeChangeInterceptor.setParamName("locale");
+        localeChangeInterceptor.setParamName("lang");
 
         return localeChangeInterceptor;
     }

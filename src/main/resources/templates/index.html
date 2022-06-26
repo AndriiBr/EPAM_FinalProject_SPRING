@@ -1,16 +1,19 @@
 <!DOCTYPE html>
-<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no, minimal-ui">
     <title>Edition Shop</title>
+<!--    <script th:inline="javascript">-->
+<!--        var frontendData = [[${frontendData}]];-->
+<!--    </script>-->
 
 </head>
 <body>
-<div th:insert="fragments/navbar :: navbar"></div>
+<!--<div th:insert="fragments/navbar :: navbar"></div>-->
 
-<span th:text="#{main-page}"></span><br/>
-<span th:text="#{welcome}"></span><br/>
+<!--<span th:text="#{main-page}"></span><br/>-->
+<!--<span th:text="#{welcome}"></span><br/>-->
 
 <button type="button"
         th:text="#{switch-en}"
@@ -19,9 +22,12 @@
         th:text="#{switch-ua}"
         onclick="window.location.href='?locale=ua'">
 </button>
-<br/>
+<h2 th:text="#{welcome}"></h2>
+<h2 th:text="#{bye}"></h2>
+<h3>Index page - from index.html</h3>
+<h3 th:text="${test} + ' - text from Model by MainController'"></h3>
+<div id="app"></div>
 
-<a href="/test">Test</a>
-
+<script th:src="${isDevMode} ? 'http://localhost:8000/main.js' : '/js/main.js'"></script>
 </body>
 </html>

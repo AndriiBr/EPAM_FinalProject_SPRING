@@ -1,0 +1,66 @@
+body{
+    overflow: hidden;
+}
+
+
+.wallet-header {
+    color: #39ace7;
+    display:inline-block;
+    text-decoration: none;
+    font-weight: 400;
+    font-size: 18px;
+}
+
+
+.balance-area{
+    margin-top: 15px;
+    margin-bottom: 10px;
+}
+
+.balance-bar, .price-bar, .remain-balance-bar, .not-enough-balance {
+    background-color: #c6f7c8;
+    color: #0d0d0d;
+    padding: 15px 15px;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 28px;
+    margin: 5px 5px 5px 5px;
+    width: 65%;
+    border: 1px solid #f6f6f6;
+    -webkit-transition: all 0.5s ease-in-out;
+    -moz-transition: all 0.5s ease-in-out;
+    -ms-transition: all 0.5s ease-in-out;
+    -o-transition: all 0.5s ease-in-out;
+    transition: all 0.5s ease-in-out;
+    -webkit-border-radius: 5px 5px 5px 5px;
+    border-radius: 5px 5px 5px 5px;
+}
+
+.price-bar{
+    background-color: #f1f1f1;
+}
+
+.not-enough-balance {
+    background-color: #f44336;
+}
+
+.error-text {
+    color: #f44336;
+}
+
+input[type=text] {
+    width: 58%;
+}
+
+form .field .icon{
+    left: 72px;
+    top: 62%;
+    color: #bfbfbf;
+}
+
+form .field .icon-error{
+    right: 72px;
+    top: 62%;
+    color: #dc3545;
+}

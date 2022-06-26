@@ -1,26 +1,30 @@
 package com.brazhnyk.epam_finalproject_spring.entity;
 
-import lombok.AllArgsConstructor;
 import lombok.Data;
-import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
+import java.util.List;
 
 @Entity
-@Table(name = "edition")
 @Data
-@NoArgsConstructor
-@AllArgsConstructor
 public class Edition {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
-    private String id;
-    private String titleUa;
+    private Long id;
     private String titleEn;
+    private String titleUa;
+
+    private String textEn;
+    private String textUa;
+
     private String titleImage;
+    private int price;
 
-//    private List<Genre> genres;
-    private Double price;
+    @ManyToOne
+    @JoinColumn(name = "genre_id")
+    private Genre genre;
 
+    @ManyToMany(mappedBy = "editions", cascade = CascadeType.ALL)
+    private List<User> users;
 }

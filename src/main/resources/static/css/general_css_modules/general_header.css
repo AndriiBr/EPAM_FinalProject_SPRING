@@ -1,0 +1,34 @@
+.general_header {
+    display: flex;
+    align-items: center;
+    flex-direction: row;
+    width: 100%;
+    height: 60px;
+    background: #fff;
+}
+
+.main_page_frame {
+    width: 240px;
+    display: block;
+    margin-left: 20px;
+    position: absolute;
+    left: 9px;
+    top: 28px;
+}
+
+.main_page {
+    font-family: "Poppins", sans-serif;
+    font-size: 18px;
+}
+
+.lang_frame {
+    width: 140px;
+    position: absolute;
+    right: 0px;
+    top: 8px;
+}
+
+.language_switch {
+    font-family: "Poppins", sans-serif;
+    font-size: 18px;
+}
