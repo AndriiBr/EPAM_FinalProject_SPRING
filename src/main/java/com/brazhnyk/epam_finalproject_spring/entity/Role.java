@@ -2,14 +2,16 @@ package com.brazhnyk.epam_finalproject_spring.entity;
 
 import lombok.Data;
 import lombok.EqualsAndHashCode;
+import lombok.ToString;
 
 import javax.persistence.*;
 import java.util.List;
 
 @Entity
-@Table(name = "user_role")
+@Table(name = "role")
 @Data
 @EqualsAndHashCode(of = { "id" })
+@ToString(of = {"id"})
 public class Role {
 
     @Id

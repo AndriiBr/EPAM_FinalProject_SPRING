@@ -1,12 +1,16 @@
 package com.brazhnyk.epam_finalproject_spring.entity;
 
 import lombok.Data;
+import lombok.EqualsAndHashCode;
+import lombok.ToString;
 
 import javax.persistence.*;
 import java.util.List;
 
 @Entity
 @Data
+@EqualsAndHashCode(of = {"id"})
+@ToString(of = {"id"})
 public class Edition {
 
     @Id
@@ -21,10 +25,10 @@ public class Edition {
     private String titleImage;
     private int price;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "genre_id")
     private Genre genre;
 
-    @ManyToMany(mappedBy = "editions", cascade = CascadeType.ALL)
+    @ManyToMany(mappedBy = "editions")
     private List<User> users;
 }

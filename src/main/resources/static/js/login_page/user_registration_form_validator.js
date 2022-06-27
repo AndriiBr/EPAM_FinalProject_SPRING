@@ -1,6 +1,6 @@
 const form = document.querySelector("form[name='registration_form']"),
     loginField = form.querySelector(".login"),
-    loginInput = loginField.querySelector("input[name='login']"),
+    loginInput = loginField.querySelector("input[name='username']"),
 
     emailField = form.querySelector(".email"),
     emailInput = emailField.querySelector("input[name='email']"),

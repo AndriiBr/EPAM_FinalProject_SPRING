@@ -27,7 +27,7 @@
 
                 <div class="d-flex align-items-center justify-content-center h-custom-4 px-5 ms-xl-4 mt-2 mb-5 pb-5 pt-2 pt-xl-0 mt-xl-n5">
 
-                    <form style="width: 25rem;" name="registration_form" class="registration" method="post" action="">
+                    <form style="width: 25rem;" name="registration_form" class="registration" method="post" th:action="@{/registration}">
 
                         <h3 class="d-flex justify-content-center fw-normal mb-3 pb-3" style="letter-spacing: 1px;"
                             th:text="#{auth.registration.form}">
@@ -36,7 +36,7 @@
                         <div class="field login">
                             <div class="input-area">
                                 <div class="form-outline mb-4">
-                                    <input type="text" id="login" name="login" class="form-control form-control-lg"
+                                    <input type="text" id="username" name="username" class="form-control form-control-lg"
                                            th:placeholder="#{auth.username}"/>
                                     <div class="error error-text"></div>
                                 </div>

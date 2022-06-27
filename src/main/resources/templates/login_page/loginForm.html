@@ -21,14 +21,14 @@
         <div class="row">
             <div class="col-sm-6 text-black">
                 <div class="d-flex align-items-center justify-content-center mt-5 pt-5 px-5 ms-xl-4 mb-0">
-                    <img class="mt-0" src="../../static/img/login_page/login_screen_user_logo.png"
+                    <img class="mt-0" src="../../static/img/empty_title_placeholder/app-logo.png"
                          alt="Logo"
                          width="140">
                 </div>
 
                 <div class="d-flex align-items-center justify-content-center h-custom-4 px-5 ms-xl-4 mt-2 mb-5 pb-5 pt-2 pt-xl-0 mt-xl-n5">
 
-                    <form style="width: 25rem;" name="login_form" class="log-in" method="post" action="">
+                    <form style="width: 25rem;" name="login_form" class="log-in" method="post" th:action="@{/login}">
 
                         <h3 class="d-flex justify-content-center fw-normal mb-3 pb-3" style="letter-spacing: 1px;"
                             th:text="#{auth.login.form}">
@@ -37,7 +37,7 @@
                         <div class="field login">
                             <div class="input-area">
                                 <div class="form-outline mb-4">
-                                    <input type="text" id="login" name="login" class="form-control form-control-lg"
+                                    <input type="text" id="username" name="username" class="form-control form-control-lg"
                                            th:placeholder="#{auth.username}"/>
                                     <div class="error error-text"></div>
                                 </div>
@@ -62,7 +62,7 @@
                         </div>
 
                         <p class="d-flex justify-content-center">
-                            <a th:href="@{/auth/registration}" class="mx-2 link-info"
+                            <a th:href="@{/registration}" class="mx-2 link-info"
                                th:text="#{auth.registration}">
                             </a>
                         </p>

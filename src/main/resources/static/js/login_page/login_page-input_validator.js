@@ -1,6 +1,6 @@
 const form = document.querySelector("form[name='login_form']"),
     loginField = form.querySelector(".login"),
-    loginInput = loginField.querySelector("input[name='login']"),
+    loginInput = loginField.querySelector("input[name='username']"),
     passwordField = form.querySelector(".password"),
     passwordInput = passwordField.querySelector("input[name='password']");
 

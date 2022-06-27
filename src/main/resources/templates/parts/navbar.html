@@ -18,7 +18,7 @@
                     <ul class="navbar-nav me-auto mb-2 mb-lg-0">
                         <li class="nav-item">
                             <a class="nav-link" style="color: white"
-                               href="${pageContext.request.contextPath}/shop/list">
+                               href="/">
                                 SilkRoad Shop
                             </a>
                         </li>
@@ -30,14 +30,14 @@
                             <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
                                 <li>
                                     <a class="dropdown-item"
-                                       href="${pageContext.request.contextPath}/user/subscriptions"
+                                       th:href="@{/user/subscriptions}"
                                        th:text="#{navbar.subscriptions}"></a>
                                 </li>
                                 <li>
                                     <hr class="dropdown-divider">
                                 </li>
                                 <li>
-                                    <a class="dropdown-item" href="${pageContext.request.contextPath}/user/wallet"
+                                    <a class="dropdown-item" th:href="@{/user/wallet}"
                                        th:text="#{navbar.wallet}"></a>
                                 </li>
                             </ul>
@@ -51,14 +51,14 @@
                                th:text="#{navbar.admin_console}"></a>
                             <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
                                 <li>
-                                    <a class="dropdown-item" href="${pageContext.request.contextPath}/admin/edition"
+                                    <a class="dropdown-item" th:href="@{/admin/edition}"
                                        th:text="#{navbar.edition_list}"></a>
                                 </li>
                                 <li>
                                     <hr class="dropdown-divider">
                                 </li>
                                 <li>
-                                    <a class="dropdown-item" href="${pageContext.request.contextPath}/admin/user-list"
+                                    <a class="dropdown-item" th:href="@{/admin/user-list}"
                                        th:text="#{navbar.user_list}"></a>
                                 </li>
                             </ul>
@@ -110,6 +110,10 @@
                     <!--                    </c:choose>-->
                     <!--                    </li>-->
                     <!--                </ul>-->
+                    <form action="/logout" method="post">
+                        <input type="submit" value="Sign Out">
+                    </form>
+
                 </div>
             </div>
         </nav>
