@@ -1,5 +1,6 @@
 package com.brazhnyk.epam_finalproject_spring.controller;
 
+import com.brazhnyk.epam_finalproject_spring.entity.Role;
 import com.brazhnyk.epam_finalproject_spring.entity.User;
 import com.brazhnyk.epam_finalproject_spring.repository.UserRepo;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -8,6 +9,8 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+
+import java.util.Collections;
 
 @Controller
 @RequestMapping
@@ -57,6 +60,7 @@ public class AuthenticationController {
             return "login_page/registrationFail";
         }
 
+        user.setRoles(Collections.singleton(Role.USER));
         userRepo.save(user);
 
         return "redirect:/login";

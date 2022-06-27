@@ -2,10 +2,12 @@ package com.brazhnyk.epam_finalproject_spring.controller;
 
 import com.brazhnyk.epam_finalproject_spring.entity.Edition;
 import com.brazhnyk.epam_finalproject_spring.entity.Genre;
+import com.brazhnyk.epam_finalproject_spring.entity.User;
 import com.brazhnyk.epam_finalproject_spring.repository.EditionRepo;
 import com.brazhnyk.epam_finalproject_spring.repository.GenreRepo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -32,7 +34,8 @@ public class ShopController {
     }
 
     @GetMapping("/")
-    public String getMainPage(Model model) {
+    public String getMainPage(@AuthenticationPrincipal User user,
+                              Model model) {
         List<Edition> editionList = editionRepo.findAll();
         List<Genre> genreList = genreRepo.findAll();
         model.addAttribute("editionList", editionList);

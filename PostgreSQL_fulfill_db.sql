@@ -1,9 +1,9 @@
-insert into role (id, role_en, role_ua)
-VALUES (0, 'banned', 'заблокований');
-insert into role (id, role_en, role_ua)
-VALUES (2, 'user', 'користувач');
-insert into role (id, role_en, role_ua)
-VALUES (3, 'admin', 'адміністратор');
+-- insert into role (id, role_en, role_ua)
+-- VALUES (0, 'banned', 'заблокований');
+-- insert into role (id, role_en, role_ua)
+-- VALUES (2, 'user', 'користувач');
+-- insert into role (id, role_en, role_ua)
+-- VALUES (3, 'admin', 'адміністратор');
 
 insert into genre (id, name_en, name_ua)
 values (1, 'fantasy', 'фентезі');
@@ -141,15 +141,15 @@ values (14,
         5,
         280);
 
-insert into usr (id, username, password, email, first_name, user_image, balance, role_id)
-VALUES (1, 'admin', 'Pass1234', 'admin@gmail.com', 'Andrii', 'no image', 1100, 3);
-insert into usr (id, username, password, email, first_name, user_image, balance, role_id)
-VALUES (2, 'user1', 'Pass1234', 'user1@gmail.com', 'Diana', 'no image', 1200, 2);
-insert into usr (id, username, password, email, first_name, user_image, balance, role_id)
-VALUES (3, 'user2', 'Pass1234', 'user2@gmail.com', 'Artem', 'no image', 1300, 2);
-insert into usr (id, username, password, email, first_name, user_image, balance, role_id)
-VALUES (4, 'user3', 'Pass1234', 'user3@gmail.com', 'Alexandra', 'no image', 1400, 2);
-insert into usr (id, username, password, email, user_image, balance, role_id)
-VALUES (5, 'user4', 'Pass1234', 'user4@gmail.com', 'no image', 1500, 2);
-
-insert into user_edition(user_id, edition_id) VALUES (1, 1);
+-- insert into usr (id, username, password, email, first_name, user_image, balance, role_id)
+-- VALUES (1, 'admin', 'Pass1234', 'admin@gmail.com', 'Andrii', 'no image', 1100, 3);
+-- insert into usr (id, username, password, email, first_name, user_image, balance, role_id)
+-- VALUES (2, 'user1', 'Pass1234', 'user1@gmail.com', 'Diana', 'no image', 1200, 2);
+-- insert into usr (id, username, password, email, first_name, user_image, balance, role_id)
+-- VALUES (3, 'user2', 'Pass1234', 'user2@gmail.com', 'Artem', 'no image', 1300, 2);
+-- insert into usr (id, username, password, email, first_name, user_image, balance, role_id)
+-- VALUES (4, 'user3', 'Pass1234', 'user3@gmail.com', 'Alexandra', 'no image', 1400, 2);
+-- insert into usr (id, username, password, email, user_image, balance, role_id)
+-- VALUES (5, 'user4', 'Pass1234', 'user4@gmail.com', 'no image', 1500, 2);
+--
+-- insert into user_edition(user_id, edition_id) VALUES (1, 1);
