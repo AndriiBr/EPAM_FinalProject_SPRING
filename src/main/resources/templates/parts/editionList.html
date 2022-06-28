@@ -18,27 +18,15 @@
                         <form action="/" method="get">
                             <select class="form-select" id="genreFilter" name="genreFilter"
                                     onchange="executeUrlParameter('genreFilter', this.options[selectedIndex].value)">
-                                <option value="0" ${requestScope.genreFilter eq
-                                '0' ? 'selected' : ''} >
-                                <fmt:message key="edition.genre" bundle="${locale}"/>
+                                <option value="0"
+                                        th:text="#{edition.genre}">
                                 </option>
-                                <c:forEach items="${requestScope.genresList}" var="genre">
-                                    <c:set var="genreId" value="${genre.id}"/>
-                                    <c:choose>
-                                        <c:when test="${language == 'ua'}">
-                                            <option value="${genreId}" ${requestScope.genreFilter eq genreId ?
-                                            'selected' : ''}>
-                                            ${genre.genreUa}
-                                            </option>
-                                        </c:when>
-                                        <c:otherwise>
-                                            <option value="${genreId}" ${requestScope.genreFilter eq genreId ?
-                                            'selected' : ''}>
-                                            ${genre.genreEn}
-                                            </option>
-                                        </c:otherwise>
-                                    </c:choose>
-                                </c:forEach>
+
+                                <option th:each="genre:${genreList}"
+                                        th:value="${genre.id}"
+                                        th:selected="(${genre.id} == ${#httpServletRequest.getParameter('genreFilter')})"
+                                        th:utext="__${#locale}__ =='ua'? ${genre.nameUa} : ${genre.nameEn}">
+                                </option>
                             </select>
                         </form>
                     </th>
@@ -49,11 +37,12 @@
                         </a>
                     </th>
 
-                    <!--                <c:if test="${sessionScope.user.role eq '3' or sessionScope.user.role eq '2'}">-->
-                    <th class=" col-2 text-center fs-5" scope="col" id="buy"
-                        th:text="#{edition.buy}">
-                    </th>
-                    <!--                </c:if>-->
+                    <div sec:authorize="isAuthenticated()">
+                        <th class=" col-2 text-center fs-5" scope="col" id="buy"
+                            th:text="#{edition.buy}">
+                        </th>
+                    </div>
+
                 </tr>
                 </thead>
 
@@ -78,21 +67,11 @@
 
                     <td class="text-center">
                         <span class="badge text-bg-success fs-6">
-                        <c:set var="key" value="${edition.genreId}"/>
-                        <c:forEach var="genre" items="${requestScope.genresList}">
-                            <c:choose>
-                                <c:when test="${genre.id == key}">
-                                    <c:choose>
-                                        <c:when test="${language == 'ua'}">
-                                            <c:out value="${genre.genreUa}"/>
-                                        </c:when>
-                                        <c:otherwise>
-                                            <c:out value="${genre.genreEn}"/>
-                                        </c:otherwise>
-                                    </c:choose>
-                                </c:when>
-                            </c:choose>
-                        </c:forEach>
+                            <div th:each="genre:${genreList}">
+                                <div th:if="${edition.genre.id} == ${genre.id}"
+                                     th:text="__${#locale}__ =='ua'? ${genre.nameUa} : ${genre.nameEn}">
+                                </div>
+                            </div>
                         </span>
                     </td>
 
@@ -102,7 +81,7 @@
                         </div>
                     </td>
 
-                    <c:if test="${sessionScope.user.role eq '3' or sessionScope.user.role eq '2'}">
+                    <div sec:authorize="isAuthenticated()">
                         <!-- Buy button -->
                         <td class="text-center">
                             <div class="d-flex justify-content-center">
@@ -116,18 +95,12 @@
                                 </form>
                             </div>
                         </td>
-                    </c:if>
+                    </div>
                 </tr>
                 </tbody>
             </table>
         </div>
     </div>
-
-    <script>
-        function openFrame(value) {
-            document.getElementById(value).style.display = 'block'
-        }
-    </script>
 
     <script src="../../static/js/addUrlParameter.js"></script>
 

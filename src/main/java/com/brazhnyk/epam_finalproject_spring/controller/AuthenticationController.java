@@ -23,18 +23,6 @@ public class AuthenticationController {
         this.userRepo = userRepo;
     }
 
-//    @GetMapping("/login")
-//    public String openLoginForm() {
-//        return "login_page/loginForm";
-//    }
-//
-//    @PostMapping("/login")
-//    public String loginUser() {
-//        User userFromDb = userRepo.findByUsername()
-//
-//        return "redirect:/shop/list";
-//    }
-
     @GetMapping("/registration")
     public String openRegistrationForm() {
         return "login_page/registrationForm";

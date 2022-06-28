@@ -16,6 +16,7 @@
           type="text/css">
     <link rel="stylesheet" href="../../static/css/cabinet_page/wallet_page/wallet_page_style.css"
           type="text/css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/flag-icon-css/2.8.0/css/flag-icon.min.css">
 </head>
 
 <body>
@@ -52,72 +53,73 @@
         <div class="fadeIn third">
             <div class="balance-area">
                 <label class="fw-bold" id="balance"
-                       th:text="edition.buy.current_balance">
+                       th:text="#{edition.buy.current_balance}">
                 </label><br/>
                 <div class="fadeIn third">
-                    <div class="balance-bar fs-4 py-1">
-                        ${sessionScope.user.balance}
+                    <div class="balance-bar fs-4 py-1"
+                         th:text="${current_balance}">
                     </div>
                 </div>
             </div>
         </div>
 
-        <c:choose>
-            <c:when test="${requestScope.remainingBalance < 0}">
-                <div class="fadeIn fourth">
-                    <div class="balance-area">
-                        <label class="fw-bold" id="label-not-enough-balance">
-                            <fmt:message key="edition.buy.remaining_balance" bundle="${locale}"/>
-                        </label>
-                        <div class="fadeIn fourth">
-                            <div id="not-enough-balance" class="not-enough-balance fs-4 py-1 mb-3">
-                                    ${requestScope.remainingBalance}
-                            </div>
-                        </div>
-                    </div>
-                    <div class="error error-text">
-                        <fmt:message key="edition.buy.text.no_money" bundle="${locale}"/>
-                    </div>
-                    <br/>
-                </div>
-            </c:when>
-            <c:otherwise>
-                <!-- Remaining balance bar (Enough money) -->
-                <div class="fadeIn fourth">
-                    <div class="balance-area ">
-                        <label id="label-remain-balance">
-                            <fmt:message key="edition.buy.remaining_balance" bundle="${locale}"/>
-                        </label>
-                        <div class="fadeIn fourth">
-                            <div id="remain-balance" class="remain-balance-bar fs-4 py-1 mb-3">
-                                    ${requestScope.remainingBalance}
-                            </div>
+        <div th:if="${remainingBalance &lt; 0 }">
+            <div class="fadeIn fourth">
+                <div class="balance-area">
+                    <label class="fw-bold" id="label-not-enough-balance"
+                           th:text="#{edition.buy.remaining_balance}">
+                    </label>
+                    <div class="fadeIn fourth">
+                        <div id="not-enough-balance" class="not-enough-balance fs-4 py-1 mb-3"
+                             th:text="${remainingBalance}">
                         </div>
                     </div>
                 </div>
+                <div class="error error-text"
+                     th:text="#{edition.buy.text.no_money}">
+                </div>
+                <br/>
+            </div>
+        </div>
 
-                <div class="fadeIn fifth">
-                    <form method="post">
-                        <button class="btn btn-info btn-lg btn-block mb-3" type="submit">
-                            <fmt:message key="edition.buy" bundle="${locale}"/>
-                        </button>
-                    </form>
+        <!-- Remaining balance bar (Enough money) -->
+        <div th:if="${remainingBalance &gt; -1}">
+            <div class="fadeIn fourth">
+                <div class="balance-area ">
+                    <label id="label-remain-balance"
+                           th:text="#{edition.buy.remaining_balance}">
+                    </label>
+                    <div class="fadeIn fourth">
+                        <div id="remain-balance" class="remain-balance-bar fs-4 py-1 mb-3"
+                             th:text="${remainingBalance}">
+                        </div>
+                    </div>
                 </div>
-            </c:otherwise>
-        </c:choose>
+            </div>
+
+
+            <div class="fadeIn fifth">
+                <form method="post">
+                    <button class="btn btn-info btn-lg btn-block mb-3" type="submit"
+                            th:text="#{edition.buy}">
+                    </button>
+                </form>
+            </div>
+        </div>
+
 
         <div id="formFooter">
             <div class="fadeIn sixth">
                 <c:if test="${(sessionScope.user.role eq '3' or sessionScope.user.role eq '2') and requestScope.remainingBalance < 0}">
                     <div class="d-flex justify-content-center pb-lg-2 user_wallet">
-                        <a class="link-info" href="${pageContext.request.contextPath}/user/wallet/top_up">
-                            <fmt:message key="user.wallet.top_up" bundle="${user}"/>
+                        <a class="link-info" th:href="@{/user/wallet/top_up}"
+                           th:text="#{user.wallet.top_up}">
                         </a>
                     </div>
                 </c:if>
                 <div class="d-flex justify-content-center pb-lg-2 user_wallet">
-                    <a class="link-info" href="${pageContext.request.contextPath}/shop/list">
-                        <fmt:message key="user.main_page" bundle="${user}"/>
+                    <a class="link-info" th:href="@{/}"
+                       th:text="#{user.main_page}">
                     </a>
                 </div>
             </div>

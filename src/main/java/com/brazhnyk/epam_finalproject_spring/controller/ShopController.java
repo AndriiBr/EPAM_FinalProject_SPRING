@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import java.util.List;
+import java.util.Optional;
 
 
 @Controller
@@ -45,11 +46,24 @@ public class ShopController {
     }
 
     @GetMapping("/buy")
-    public String openBuyPage(@RequestParam(name = "buy_edition_id") Long editionId, Model model) {
-        Edition edition = editionRepo.findById(editionId).get();
+    public String openBuyPage(@AuthenticationPrincipal User user,
+                              @RequestParam(name = "buy_edition_id") Long editionId, Model model) {
+        Optional<Edition> editionFromDb = editionRepo.findById(editionId);
+        Edition edition = null;
 
-        model.addAttribute("edition", edition);
+        if (editionFromDb.isPresent()) {
+            edition = editionFromDb.get();
+        }
 
+        if (edition != null) {
+
+            int userBalance = user.getBalance();
+            int remainingBalance = userBalance - edition.getPrice();
+
+            model.addAttribute("edition", edition);
+            model.addAttribute("current_balance", userBalance);
+            model.addAttribute("remainingBalance", remainingBalance);
+        }
         return "edition_page/buyEdition";
     }
 }

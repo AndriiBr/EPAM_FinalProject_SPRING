@@ -1,15 +1,4 @@
-<%@ page pageEncoding="UTF-8" %>
-<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
-<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
-<%@ taglib uri="http://servlet.project" prefix="upd" %>
-
-<c:set var="language"
-       value="${not empty param.language ? param.language : not empty language ? language : pageContext.request.locale}"
-       scope="session"/>
-
-<fmt:setLocale value="${language}"/>
-<fmt:setBundle basename="localization/locale" var="locale"/>
-
+<div th:fragment="pagination" class="pagination">
 <div class="container my-0 py-0">
     <nav aria-label="Page navigation example">
         <div class="row mb-2">
@@ -39,71 +28,82 @@
                 </ul>
             </div>
             <div class="col">
+                <!-- PREVIOUS button-->
                 <ul class="pagination justify-content-center mb-5 pb-2">
-                    <c:choose>
-                        <c:when test="${requestScope.currentPage eq '1'}">
-                            <li class="page-item disabled">
-                                <button class="page-link"
-                                        onclick="executeUrlParameter('currentPage', ${requestScope.currentPage - 1})">
-                                    <fmt:message key="edition.previous" bundle="${locale}"/>
-                                </button>
-                            </li>
-                        </c:when>
-                        <c:otherwise>
+                    <div th:if="${currentPage == '1'}">
+                        <li class="page-item disabled">
+                            <button class="page-link"
+                                    th:data-ur="'currentPage'"
+                                    th:data-page="${currentPage - 1}"
+                                    th:onclick="executeUrlParameter(this.getAttribute('data-ur'), this.getAttribute('data-page'))"
+                                    th:text="#{edition.previous}">
+                            </button>
+                        </li>
+                    </div>
+                    <div th:unless="${currentPage == '1'}">
+                        <li class="page-item">
+                            <button class="page-link"
+                                    th:data-ur="'currentPage'"
+                                    th:data-page="${currentPage - 1}"
+                                    th:onclick="executeUrlParameter(this.getAttribute('data-ur'), this.getAttribute('data-page'))"
+                                    th:text="#{edition.previous}">
+                            </button>
+                        </li>
+                    </div>
+
+                    <!-- Page sequence -->
+                    <div th:if="${userList.totalPages > 0}"
+                         th:each="pageNumber : ${pageNumbers}">
+                        <div th:if="${currentPage} == ${pageNumber}">
+                        <li class="page-item active">
+                            <button class="page-link"
+                                    th:data-ur="'currentPage'"
+                                    th:data-page="${pageNumber}"
+                                    th:onclick="executeUrlParameter(this.getAttribute('data-ur'), this.getAttribute('data-page'))"
+                                    th:text="${pageNumber}">
+                            </button>
+                        </li>
+                        </div>
+                        <div th:unless="${currentPage} == ${pageNumber}">
                             <li class="page-item">
                                 <button class="page-link"
-                                        onclick="executeUrlParameter('currentPage', ${requestScope.currentPage - 1})">
-                                    <fmt:message key="edition.previous" bundle="${locale}"/>
+                                        th:data-ur="'currentPage'"
+                                        th:data-page="${pageNumber}"
+                                        th:onclick="executeUrlParameter(this.getAttribute('data-ur'), this.getAttribute('data-page'))"
+                                        th:text="${pageNumber}">
                                 </button>
                             </li>
-                        </c:otherwise>
-                    </c:choose>
+                        </div>
+                    </div>
 
-                    <c:forEach begin="1" end="${requestScope.numberOfPages}" var="i">
-                        <c:choose>
-                            <c:when test="${requestScope.currentPage eq i}">
-                                <li class="page-item active">
-                                    <button class="page-link"
-                                            onclick="executeUrlParameter('currentPage', ${i})">${i}</button>
-                                </li>
-                            </c:when>
-                            <c:otherwise>
-                                <li class="page-item">
-                                    <button class="page-link"
-                                            onclick="executeUrlParameter('currentPage', ${i})">${i}</button>
-                                </li>
-                            </c:otherwise>
-                        </c:choose>
-                    </c:forEach>
-
-                    <c:choose>
-                        <c:when test="${requestScope.currentPage ne requestScope.numberOfPages}">
-                            <li class="page-item">
-                                <button class="page-link"
-                                        onclick="executeUrlParameter('currentPage', ${requestScope.currentPage + 1})">
-                                    <fmt:message key="edition.next" bundle="${locale}"/>
-                                </button>
-                            </li>
-                        </c:when>
-                        <c:otherwise>
-                            <li class="page-item  disabled">
-                                <button class="page-link"
-                                        onclick="executeUrlParameter('currentPage', ${requestScope.currentPage + 1})">
-                                    <fmt:message key="edition.next" bundle="${locale}"/>
-                                </button>
-                            </li>
-                        </c:otherwise>
-                    </c:choose>
+                    <!-- NEXT button-->
+                    <div th:if="${currentPage} == ${totalPages}">
+                        <li class="page-item disabled">
+                            <button class="page-link"
+                                    th:data-ur="'currentPage'"
+                                    th:data-page="${currentPage} + 1"
+                                    th:onclick="executeUrlParameter(this.getAttribute('data-ur'), this.getAttribute('data-page'))"
+                                    th:text="#{edition.next}">
+                            </button>
+                        </li>
+                    </div>
+                    <div th:unless="${currentPage} == ${totalPages}">
+                        <li class="page-item">
+                            <button class="page-link"
+                                    th:data-ur="'currentPage'"
+                                    th:data-page="${currentPage} + 1"
+                                    th:onclick="executeUrlParameter(this.getAttribute('data-ur'), this.getAttribute('data-page'))"
+                                    th:text="#{edition.next}">
+                            </button>
+                        </li>
+                    </div>
                 </ul>
             </div>
-            <div class="col">
-                <div class="d-flex justify-content-end mt-2">
-                    <fmt:message key="tag.last_update" bundle="${locale}"/>
-                    <upd:lastUpdate/>
-                </div>
-            </div>
+            <div class="col"></div>
         </div>
     </nav>
 </div>
 
-<script src="${pageContext.request.contextPath}/js/addUrlParameter.js"></script>
+<script src="../../static/js/addUrlParameter.js"></script>
+
+</div>
