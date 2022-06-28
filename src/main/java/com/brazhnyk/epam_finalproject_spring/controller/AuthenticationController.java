@@ -48,7 +48,7 @@ public class AuthenticationController {
             return "login_page/registrationFail";
         }
 
-        user.setRoles(Collections.singleton(Role.USER));
+        user.setRoles(Collections.singleton(Role.ROLE_USER));
         userRepo.save(user);
 
         return "redirect:/login";

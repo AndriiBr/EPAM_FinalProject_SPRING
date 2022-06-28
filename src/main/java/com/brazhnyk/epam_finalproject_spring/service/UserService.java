@@ -15,7 +15,7 @@ import org.springframework.stereotype.Service;
 @Service
 public class UserService implements UserDetailsService{
 
-    private static final int RECORDS_PER_PAGE = 4;
+    private static final int RECORDS_PER_PAGE = 5;
     private static final int CURRENT_PAGE = 1;
     private final UserRepo userRepo;
 
@@ -47,10 +47,6 @@ public class UserService implements UserDetailsService{
         }
         userFromDb.setBalance(userFromDb.getBalance() + value);
         userRepo.save(userFromDb);
-    }
-
-    public Page<User> getPageableListOfUsers(Pageable pageable) {
-        return userRepo.findAll(pageable);
     }
 
     public Page<User> getUsersPage(String page, String records) {

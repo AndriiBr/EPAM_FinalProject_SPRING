@@ -1,109 +1,120 @@
 <div th:fragment="pagination" class="pagination">
-<div class="container my-0 py-0">
-    <nav aria-label="Page navigation example">
-        <div class="row mb-2">
-            <div class="col">
-                <ul class="pagination justify-content-start mb-5 pb-2">
-                    <li class="page-item">
-                        <button class="page-link disabled disabled">Elements</button>
-                    </li>
+    <div class="container my-0 py-0">
+        <nav aria-label="Page navigation example">
+            <div class="row mb-2">
 
-                    <c:forEach items="${[3, 5, 7, 10, 15]}" var="r">
-                        <c:choose>
-                            <c:when test="${requestScope.recordsPerPage eq r}">
+                <!-- 1st column -->
+                <div class="col">
+                    <ul class="pagination justify-content-start mb-5 pb-2">
+                        <li class="page-item">
+                            <button class="page-link disabled disabled">Elements</button>
+                        </li>
+
+                        <div th:each="elem : ${itemStep}">
+                            <div th:if="${recordsPerPage} == ${elem}">
                                 <li class="page-item active">
                                     <button class="page-link"
-                                            onclick="executeUrlParameter('recordsPerPage', ${r})">${r}</button>
+                                            th:data-ur="'recordsPerPage'"
+                                            th:data-page="${elem}"
+                                            th:onclick="executeUrlParameter(this.getAttribute('data-ur'), this.getAttribute('data-page'))"
+                                            th:text="${elem}">
+                                    </button>
                                 </li>
-                            </c:when>
-                            <c:otherwise>
+                            </div>
+                            <div th:unless="${recordsPerPage} == ${elem}">
                                 <li class="page-item">
                                     <button class="page-link"
-                                            onclick="executeUrlParameter('recordsPerPage', ${r})">${r}</button>
+                                            th:data-ur="'recordsPerPage'"
+                                            th:data-page="${elem}"
+                                            th:onclick="executeUrlParameter(this.getAttribute('data-ur'), this.getAttribute('data-page'))"
+                                            th:text="${elem}">
+                                    </button>
                                 </li>
-                            </c:otherwise>
-                        </c:choose>
-                    </c:forEach>
-
-                </ul>
-            </div>
-            <div class="col">
-                <!-- PREVIOUS button-->
-                <ul class="pagination justify-content-center mb-5 pb-2">
-                    <div th:if="${currentPage == '1'}">
-                        <li class="page-item disabled">
-                            <button class="page-link"
-                                    th:data-ur="'currentPage'"
-                                    th:data-page="${currentPage - 1}"
-                                    th:onclick="executeUrlParameter(this.getAttribute('data-ur'), this.getAttribute('data-page'))"
-                                    th:text="#{edition.previous}">
-                            </button>
-                        </li>
-                    </div>
-                    <div th:unless="${currentPage == '1'}">
-                        <li class="page-item">
-                            <button class="page-link"
-                                    th:data-ur="'currentPage'"
-                                    th:data-page="${currentPage - 1}"
-                                    th:onclick="executeUrlParameter(this.getAttribute('data-ur'), this.getAttribute('data-page'))"
-                                    th:text="#{edition.previous}">
-                            </button>
-                        </li>
-                    </div>
-
-                    <!-- Page sequence -->
-                    <div th:if="${userList.totalPages > 0}"
-                         th:each="pageNumber : ${pageNumbers}">
-                        <div th:if="${currentPage} == ${pageNumber}">
-                        <li class="page-item active">
-                            <button class="page-link"
-                                    th:data-ur="'currentPage'"
-                                    th:data-page="${pageNumber}"
-                                    th:onclick="executeUrlParameter(this.getAttribute('data-ur'), this.getAttribute('data-page'))"
-                                    th:text="${pageNumber}">
-                            </button>
-                        </li>
+                            </div>
                         </div>
-                        <div th:unless="${currentPage} == ${pageNumber}">
-                            <li class="page-item">
+                    </ul>
+                </div>
+
+                <!-- 2nd column -->
+                <div class="col">
+                    <!-- PREVIOUS button-->
+                    <ul class="pagination justify-content-center mb-5 pb-2">
+                        <div th:if="${currentPage == '1'}">
+                            <li class="page-item disabled">
                                 <button class="page-link"
                                         th:data-ur="'currentPage'"
-                                        th:data-page="${pageNumber}"
+                                        th:data-page="${currentPage - 1}"
                                         th:onclick="executeUrlParameter(this.getAttribute('data-ur'), this.getAttribute('data-page'))"
-                                        th:text="${pageNumber}">
+                                        th:text="#{edition.previous}">
                                 </button>
                             </li>
                         </div>
-                    </div>
+                        <div th:unless="${currentPage == '1'}">
+                            <li class="page-item">
+                                <button class="page-link"
+                                        th:data-ur="'currentPage'"
+                                        th:data-page="${currentPage - 1}"
+                                        th:onclick="executeUrlParameter(this.getAttribute('data-ur'), this.getAttribute('data-page'))"
+                                        th:text="#{edition.previous}">
+                                </button>
+                            </li>
+                        </div>
 
-                    <!-- NEXT button-->
-                    <div th:if="${currentPage} == ${totalPages}">
-                        <li class="page-item disabled">
-                            <button class="page-link"
-                                    th:data-ur="'currentPage'"
-                                    th:data-page="${currentPage} + 1"
-                                    th:onclick="executeUrlParameter(this.getAttribute('data-ur'), this.getAttribute('data-page'))"
-                                    th:text="#{edition.next}">
-                            </button>
-                        </li>
-                    </div>
-                    <div th:unless="${currentPage} == ${totalPages}">
-                        <li class="page-item">
-                            <button class="page-link"
-                                    th:data-ur="'currentPage'"
-                                    th:data-page="${currentPage} + 1"
-                                    th:onclick="executeUrlParameter(this.getAttribute('data-ur'), this.getAttribute('data-page'))"
-                                    th:text="#{edition.next}">
-                            </button>
-                        </li>
-                    </div>
-                </ul>
+                        <!-- Page sequence -->
+                        <div th:if="${totalPages}  > 0"
+                             th:each="pageNumber : ${pageNumbers}">
+                            <div th:if="${currentPage} == ${pageNumber}">
+                                <li class="page-item active">
+                                    <button class="page-link"
+                                            th:data-ur="'currentPage'"
+                                            th:data-page="${pageNumber}"
+                                            th:onclick="executeUrlParameter(this.getAttribute('data-ur'), this.getAttribute('data-page'))"
+                                            th:text="${pageNumber}">
+                                    </button>
+                                </li>
+                            </div>
+                            <div th:unless="${currentPage} == ${pageNumber}">
+                                <li class="page-item">
+                                    <button class="page-link"
+                                            th:data-ur="'currentPage'"
+                                            th:data-page="${pageNumber}"
+                                            th:onclick="executeUrlParameter(this.getAttribute('data-ur'), this.getAttribute('data-page'))"
+                                            th:text="${pageNumber}">
+                                    </button>
+                                </li>
+                            </div>
+                        </div>
+
+                        <!-- NEXT button-->
+                        <div th:if="${currentPage} == ${totalPages}">
+                            <li class="page-item disabled">
+                                <button class="page-link"
+                                        th:data-ur="'currentPage'"
+                                        th:data-page="${currentPage} + 1"
+                                        th:onclick="executeUrlParameter(this.getAttribute('data-ur'), this.getAttribute('data-page'))"
+                                        th:text="#{edition.next}">
+                                </button>
+                            </li>
+                        </div>
+                        <div th:unless="${currentPage} == ${totalPages}">
+                            <li class="page-item">
+                                <button class="page-link"
+                                        th:data-ur="'currentPage'"
+                                        th:data-page="${currentPage} + 1"
+                                        th:onclick="executeUrlParameter(this.getAttribute('data-ur'), this.getAttribute('data-page'))"
+                                        th:text="#{edition.next}">
+                                </button>
+                            </li>
+                        </div>
+                    </ul>
+                </div>
+                <!-- 3rd column -->
+                <div class="col">
+                </div>
             </div>
-            <div class="col"></div>
-        </div>
-    </nav>
-</div>
+        </nav>
+    </div>
 
-<script src="../../static/js/addUrlParameter.js"></script>
+    <script src="../../static/js/addUrlParameter.js"></script>
 
 </div>

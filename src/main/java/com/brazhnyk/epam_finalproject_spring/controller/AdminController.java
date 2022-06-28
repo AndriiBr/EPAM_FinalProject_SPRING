@@ -1,7 +1,12 @@
 package com.brazhnyk.epam_finalproject_spring.controller;
 
+import com.brazhnyk.epam_finalproject_spring.entity.Edition;
+import com.brazhnyk.epam_finalproject_spring.entity.Genre;
 import com.brazhnyk.epam_finalproject_spring.entity.User;
+import com.brazhnyk.epam_finalproject_spring.service.EditionService;
+import com.brazhnyk.epam_finalproject_spring.service.GenreService;
 import com.brazhnyk.epam_finalproject_spring.service.UserService;
+import com.brazhnyk.epam_finalproject_spring.util.PaginationPresetCreator;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Controller;
@@ -11,18 +16,20 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import java.util.List;
-import java.util.stream.Collectors;
-import java.util.stream.IntStream;
 
 @Controller
 @RequestMapping("/admin")
 public class AdminController {
 
     private final UserService userService;
+    private final EditionService editionService;
+    private final GenreService genreService;
 
     @Autowired
-    public AdminController(UserService userService) {
+    public AdminController(UserService userService, EditionService editionService, GenreService genreService) {
         this.userService = userService;
+        this.editionService = editionService;
+        this.genreService = genreService;
     }
 
     @GetMapping("/user-list")
@@ -33,17 +40,31 @@ public class AdminController {
 
         model.addAttribute("userList", userList);
 
-        int totalPages = userList.getTotalPages();
-        if (totalPages > 0) {
-            List<Integer> pageNumbers = IntStream.rangeClosed(1, totalPages)
-                    .boxed()
-                    .collect(Collectors.toList());
-            model.addAttribute("pageNumbers", pageNumbers);
-        }
-
-        model.addAttribute("currentPage", currentPage);
-        model.addAttribute("totalPages", userList.getTotalPages());
+        model.addAttribute("pageNumbers", PaginationPresetCreator.preparePageNumbers(userList));
+        model.addAttribute("itemStep", PaginationPresetCreator.prepareItemStep(3, 5, 7, 10));
+        model.addAttribute("currentPage", currentPage != null ? currentPage : 1);
+        model.addAttribute("recordsPerPage", recordsPerPage != null ? recordsPerPage : 5);
+        model.addAttribute("totalPages", PaginationPresetCreator.preparePageNumbers(userList).size());
 
         return "admin/users";
+    }
+
+    @GetMapping("/edition")
+    public String openEditionListPage(@RequestParam(name = "currentPage", required = false) String currentPage,
+                                      @RequestParam(name = "recordsPerPage", required = false) String recordsPerPage,
+                                      Model model) {
+        Page<Edition> editionList = editionService.getEditionPage(currentPage, recordsPerPage);
+        List<Genre> genreList = genreService.findAllGenres();
+
+        model.addAttribute("editionList", editionList);
+        model.addAttribute("genreList", genreList);
+
+        model.addAttribute("pageNumbers", PaginationPresetCreator.preparePageNumbers(editionList));
+        model.addAttribute("itemStep", PaginationPresetCreator.prepareItemStep(3, 5, 7, 10));
+        model.addAttribute("currentPage", currentPage != null ? currentPage : 1);
+        model.addAttribute("recordsPerPage", recordsPerPage != null ? recordsPerPage : 5);
+        model.addAttribute("totalPages", PaginationPresetCreator.preparePageNumbers(editionList).size());
+
+        return "admin/adminEditions";
     }
 }

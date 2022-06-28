@@ -5,6 +5,8 @@ import com.brazhnyk.epam_finalproject_spring.entity.Genre;
 import com.brazhnyk.epam_finalproject_spring.entity.User;
 import com.brazhnyk.epam_finalproject_spring.repository.EditionRepo;
 import com.brazhnyk.epam_finalproject_spring.repository.GenreRepo;
+import com.brazhnyk.epam_finalproject_spring.service.EditionService;
+import com.brazhnyk.epam_finalproject_spring.service.GenreService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
@@ -25,20 +27,20 @@ public class ShopController {
     @Value("${spring.profiles.active}")
     private String profile;
 
-    private final EditionRepo editionRepo;
-    private final GenreRepo genreRepo;
+    private final EditionService editionService;
+    private final GenreService genreService;
 
     @Autowired
-    public ShopController(EditionRepo editionRepo, GenreRepo genreRepo) {
-        this.editionRepo = editionRepo;
-        this.genreRepo = genreRepo;
+    public ShopController(EditionService editionService, GenreService genreService) {
+        this.editionService = editionService;
+        this.genreService = genreService;
     }
 
     @GetMapping("/")
     public String getMainPage(@AuthenticationPrincipal User user,
                               Model model) {
-        List<Edition> editionList = editionRepo.findAll();
-        List<Genre> genreList = genreRepo.findAll();
+        List<Edition> editionList = editionService.findAllEditions();
+        List<Genre> genreList = genreService.findAllGenres();
         model.addAttribute("editionList", editionList);
         model.addAttribute("genreList", genreList);
 
@@ -48,7 +50,7 @@ public class ShopController {
     @GetMapping("/buy")
     public String openBuyPage(@AuthenticationPrincipal User user,
                               @RequestParam(name = "buy_edition_id") Long editionId, Model model) {
-        Optional<Edition> editionFromDb = editionRepo.findById(editionId);
+        Optional<Edition> editionFromDb = editionService.findById(editionId);
         Edition edition = null;
 
         if (editionFromDb.isPresent()) {
