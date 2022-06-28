@@ -46,38 +46,39 @@
                         </a>
                     </th>
 
-                    <!--                <c:if test="${sessionScope.user.role eq '3'}">-->
-                    <th class=" col-2 text-center fs-5" scope="col" id="edit"
-                        th:text="#{edition.edit}">
-                    </th>
-                    <th class=" col-2 text-center fs-5" scope="col" id="delete"
-                        th:text="edition.delete">
-                    </th>
-                    <!--                </c:if>-->
+                    <div sec:authorize="isAuthenticated()">
+                        <th class=" col-2 text-center fs-5" scope="col" id="edit"
+                            th:text="#{edition.edit}">
+                        </th>
+                        <th class=" col-2 text-center fs-5" scope="col" id="delete"
+                            th:text="edition.delete">
+                        </th>
+                    </div>
+                    >
                 </tr>
                 </thead>
 
                 <tbody class="table-group-divider">
 
-                <c:forEach var="edition" items="${requestScope.editionList}">
-                    <tr th:each="edition :${editionList}" th:id="${edition.id}">
-                        <td>
-                            <div class="d-flex align-items-center">
-                                <img th:src="${edition.titleImage}" alt="${edition.titleEn}" style="width: 160px"
-                                     onerror="this.onerror=null;this.src='../../static/img/empty_title_placeholder/No_Image_Placeholder.jpg';"/>
-                            </div>
-                        </td>
 
-                        <td>
-                            <p class="fw-bold">
-                            <div th:text="__${#locale}__ =='ua'? ${edition.titleUa} : ${edition.titleEn}"></div>
-                            </p>
-                            <p class="text-muted mb-0 pe-5">
-                            <div th:text="__${#locale}__ =='ua'? ${edition.textUa} : ${edition.textEn}"></div>
-                            </p>
-                        </td>
+                <tr th:each="edition :${editionList}" th:id="${edition.id}">
+                    <td>
+                        <div class="d-flex align-items-center">
+                            <img th:src="${edition.titleImage}" alt="${edition.titleEn}" style="width: 160px"
+                                 onerror="this.onerror=null;this.src='../../static/img/empty_title_placeholder/No_Image_Placeholder.jpg';"/>
+                        </div>
+                    </td>
 
-                        <td class="text-center">
+                    <td>
+                        <p class="fw-bold">
+                        <div th:text="__${#locale}__ =='ua'? ${edition.titleUa} : ${edition.titleEn}"></div>
+                        </p>
+                        <p class="text-muted mb-0 pe-5">
+                        <div th:text="__${#locale}__ =='ua'? ${edition.textUa} : ${edition.textEn}"></div>
+                        </p>
+                    </td>
+
+                    <td class="text-center">
                         <span class="badge text-bg-success fs-6">
                             <div th:each="genre:${genreList}">
                                 <div th:if="${edition.genre.id} == ${genre.id}"
@@ -85,46 +86,45 @@
                                 </div>
                             </div>
                         </span>
-                        </td>
+                    </td>
 
+                    <td class="text-center">
+                        <div class="fw-bold fs-5"
+                             th:text="${edition.price}">
+                        </div>
+                    </td>
+
+                    <div sec:authorize="isAuthenticated()">
+                        <!-- Edit button -->
                         <td class="text-center">
-                            <div class="fw-bold fs-5"
-                                 th:text="${edition.price}">
+                            <div class="d-flex justify-content-center">
+                                <form class="container" action="/admin/edition/edit" method="get">
+                                    <div class="clearfix">
+                                        <button type="submit" name="edit_edition_id" th:value="${edition.id}"
+                                                class="btn btn-warning btn-sm fw-bold mx-1"
+                                                th:text="#{edition.edit}">
+                                        </button>
+                                    </div>
+                                </form>
                             </div>
                         </td>
 
-                        <div sec:authorize="isAuthenticated()">
-                            <!-- Edit button -->
-                            <td class="text-center">
-                                <div class="d-flex justify-content-center">
-                                    <form class="container" action="/admin/edition/edit" method="get">
-                                        <div class="clearfix">
-                                            <button type="submit" name="buy_edition_id" th:value="${edition.id}"
-                                                    class="btn btn-warning btn-sm fw-bold mx-1"
-                                                    th:text="#{edition.edit}">
-                                            </button>
-                                        </div>
-                                    </form>
-                                </div>
-                            </td>
+                        <!-- Delete button -->
+                        <td class="text-center">
+                            <div class="d-flex justify-content-center">
+                                <form class="container" action="/admin/edition/delete" method="post">
+                                    <div class="clearfix">
+                                        <button type="submit" name="delete_edition_id" th:value="${edition.id}"
+                                                class="btn btn-danger btn-sm fw-bold mx-1"
+                                                th:text="#{edition.delete}">
+                                        </button>
+                                    </div>
+                                </form>
+                            </div>
+                        </td>
 
-                            <!-- Delete button -->
-                            <td class="text-center">
-                                <div class="d-flex justify-content-center">
-                                    <form class="container" action="/admin/edition/delete" method="post">
-                                        <div class="clearfix">
-                                            <button type="submit" name="buy_edition_id" th:value="${edition.id}"
-                                                    class="btn btn-danger btn-sm fw-bold mx-1"
-                                                    th:text="#{edition.delete}">
-                                            </button>
-                                        </div>
-                                    </form>
-                                </div>
-                            </td>
-
-                        </div>
-                    </tr>
-                </c:forEach>
+                    </div>
+                </tr>
                 </tbody>
             </table>
         </div>

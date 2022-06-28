@@ -29,16 +29,15 @@ public class User implements UserDetails {
     private String userImage;
     private int balance;
 
-    @ManyToMany(cascade = { CascadeType.ALL }, fetch = FetchType.LAZY)
-    @JoinTable(name = "User_Edition",
-            joinColumns = {@JoinColumn(name = "user_id")},
-            inverseJoinColumns = {@JoinColumn(name = "edition_id")})
-    private List<Edition> editions = new ArrayList<>();
-
     @ElementCollection(targetClass = Role.class, fetch = FetchType.EAGER)
     @CollectionTable(name = "role", joinColumns = @JoinColumn(name = "user_id"))
     @Enumerated(EnumType.STRING)
     private Set<Role> roles;
+
+    @OneToMany(
+            mappedBy = "edition",
+            orphanRemoval = true)
+    private List<UserEdition> editions = new ArrayList<>();
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {

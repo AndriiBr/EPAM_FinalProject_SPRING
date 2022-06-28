@@ -29,6 +29,8 @@ public class Edition {
     @JoinColumn(name = "genre_id")
     private Genre genre;
 
-    @ManyToMany(mappedBy = "editions")
-    private List<User> users;
+    @OneToMany(
+            mappedBy = "user",
+            orphanRemoval = true)
+    private List<UserEdition> users;
 }

@@ -2,6 +2,7 @@ package com.brazhnyk.epam_finalproject_spring.service;
 
 import com.brazhnyk.epam_finalproject_spring.entity.Edition;
 import com.brazhnyk.epam_finalproject_spring.entity.User;
+import com.brazhnyk.epam_finalproject_spring.exception.AuthenticationError;
 import com.brazhnyk.epam_finalproject_spring.repository.EditionRepo;
 import com.brazhnyk.epam_finalproject_spring.util.InputValidator;
 import org.springframework.beans.BeanUtils;
@@ -67,5 +68,31 @@ public class EditionService {
         Pageable pageable = PageRequest.of(currentPage - 1, recordsPerPage);
 
         return editionRepo.findAll(pageable);
+    }
+
+    public Page<Edition> findAllNotOrdered(User user, String page, String records) {
+        int currentPage = InputValidator.validateNumberValue(page) ? Integer.parseInt(page) : CURRENT_PAGE;
+        int recordsPerPage = InputValidator.validateNumberValue(records) ? Integer.parseInt(records) : RECORDS_PER_PAGE;
+
+        Pageable pageable = PageRequest.of(currentPage - 1, recordsPerPage);
+
+        if (user == null) {
+            return editionRepo.findAll(pageable);
+        } else {
+            return editionRepo.findAllByUserIdNotIn(user.getId(), pageable);
+        }
+    }
+
+    public Page<Edition> findAllOrdered(User user, String page, String records) throws AuthenticationError {
+        int currentPage = InputValidator.validateNumberValue(page) ? Integer.parseInt(page) : CURRENT_PAGE;
+        int recordsPerPage = InputValidator.validateNumberValue(records) ? Integer.parseInt(records) : RECORDS_PER_PAGE;
+
+        Pageable pageable = PageRequest.of(currentPage - 1, recordsPerPage);
+
+        if (user == null) {
+            throw new AuthenticationError();
+        } else {
+            return editionRepo.findAllByUserIdIn(user.getId(), pageable);
+        }
     }
 }
