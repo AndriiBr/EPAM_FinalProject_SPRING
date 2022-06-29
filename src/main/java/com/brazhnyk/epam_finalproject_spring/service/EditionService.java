@@ -6,6 +6,7 @@ import com.brazhnyk.epam_finalproject_spring.entity.User;
 import com.brazhnyk.epam_finalproject_spring.exception.AuthenticationError;
 import com.brazhnyk.epam_finalproject_spring.repository.EditionRepo;
 import com.brazhnyk.epam_finalproject_spring.util.InputValidator;
+import com.brazhnyk.epam_finalproject_spring.util.PaginationPresetEngine;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -14,14 +15,14 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
-import java.util.List;
 import java.util.Optional;
+
+import static com.brazhnyk.epam_finalproject_spring.util.PaginationPresetEngine.CURRENT_PAGE;
+import static com.brazhnyk.epam_finalproject_spring.util.PaginationPresetEngine.RECORDS_PER_PAGE;
 
 @Service
 public class EditionService {
 
-    private static final int RECORDS_PER_PAGE = 5;
-    private static final int CURRENT_PAGE = 1;
     private final EditionRepo editionRepo;
 
     @Autowired
@@ -29,8 +30,15 @@ public class EditionService {
         this.editionRepo = editionRepo;
     }
 
-    public List<Edition> findAllEditions() {
-        return editionRepo.findAll();
+    public Page<Edition> findAll(String page, String records,Genre genre, String orderBy) {
+
+        Pageable pageable = PaginationPresetEngine.definePageableByParam(page, records, orderBy);
+
+        if (genre == null) {
+            return editionRepo.findAll(pageable);
+        } else {
+            return editionRepo.findAllByGenre(genre, pageable);
+        }
     }
 
     public void saveEdition(Edition edition) {
@@ -45,15 +53,6 @@ public class EditionService {
         return editionRepo.save(newEdition);
     }
 
-    public Page<Edition> getEditionsPage(String page, String records) {
-        int currentPage = InputValidator.validateNumberValue(page) ? Integer.parseInt(page) : CURRENT_PAGE;
-        int recordsPerPage = InputValidator.validateNumberValue(records) ? Integer.parseInt(records) : RECORDS_PER_PAGE;
-
-        Pageable pageable = PageRequest.of(currentPage - 1, recordsPerPage, Sort.Direction.DESC);
-
-        return editionRepo.findAll(pageable);
-    }
-
     public void delete(Edition edition) {
         editionRepo.delete(edition);
     }
@@ -63,19 +62,22 @@ public class EditionService {
     }
 
     public Page<Edition> getEditionPage(String page, String records) {
-        int currentPage = InputValidator.validateNumberValue(page) ? Integer.parseInt(page) : CURRENT_PAGE;
-        int recordsPerPage = InputValidator.validateNumberValue(records) ? Integer.parseInt(records) : RECORDS_PER_PAGE;
-
-        Pageable pageable = PageRequest.of(currentPage - 1, recordsPerPage);
+        Pageable pageable = PaginationPresetEngine.definePageableByParam(page, records, null);
 
         return editionRepo.findAll(pageable);
     }
 
-    public Page<Edition> findAllNotOrdered(User user, String page, String records, Genre genre) {
-        int currentPage = InputValidator.validateNumberValue(page) ? Integer.parseInt(page) : CURRENT_PAGE;
-        int recordsPerPage = InputValidator.validateNumberValue(records) ? Integer.parseInt(records) : RECORDS_PER_PAGE;
+    /**
+     * Generates page with editions using provided filters.
+     * @param user - logged in user
+     * @param page - number of required page
+     * @param records - number of records per page
+     * @param genre - genreFilter
+     * @return page with editions
+     */
+    public Page<Edition> findAllNotOrdered(User user, String page, String records, Genre genre, String orderBy) {
 
-        Pageable pageable = PageRequest.of(currentPage - 1, recordsPerPage);
+        Pageable pageable = PaginationPresetEngine.definePageableByParam(page, records, orderBy);
 
         if (genre == null) {
             if (user == null) {
@@ -93,16 +95,18 @@ public class EditionService {
         }
     }
 
-    public Page<Edition> findAllOrdered(User user, String page, String records) throws AuthenticationError {
-        int currentPage = InputValidator.validateNumberValue(page) ? Integer.parseInt(page) : CURRENT_PAGE;
-        int recordsPerPage = InputValidator.validateNumberValue(records) ? Integer.parseInt(records) : RECORDS_PER_PAGE;
+    public Page<Edition> findAllOrdered(User user, String page, String records,Genre genre, String orderBy) throws AuthenticationError {
 
-        Pageable pageable = PageRequest.of(currentPage - 1, recordsPerPage);
+        Pageable pageable = PaginationPresetEngine.definePageableByParam(page, records, orderBy);
 
         if (user == null) {
             throw new AuthenticationError();
         } else {
-            return editionRepo.findAllByUserIdIn(user.getId(), pageable);
+            if (genre == null) {
+                return editionRepo.findAllByUserIdIn(user.getId(), pageable);
+            } else {
+                return editionRepo.findAllByGenreAndUserIdIn(genre, user.getId(), pageable);
+            }
         }
     }
 }

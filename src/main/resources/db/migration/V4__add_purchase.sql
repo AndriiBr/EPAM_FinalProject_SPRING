@@ -1,0 +1,9 @@
+insert into user_edition(edition_id, user_id) VALUES (1, 1);
+insert into user_edition(edition_id, user_id) VALUES (2, 1);
+insert into user_edition(edition_id, user_id) VALUES (4, 1);
+insert into user_edition(edition_id, user_id) VALUES (5, 1);
+insert into user_edition(edition_id, user_id) VALUES (6, 1);
+insert into user_edition(edition_id, user_id) VALUES (10, 1);
+insert into user_edition(edition_id, user_id) VALUES (1, 2);
+insert into user_edition(edition_id, user_id) VALUES (2, 2);
+insert into user_edition(edition_id, user_id) VALUES (3, 2);

@@ -1,5 +1,6 @@
 package com.brazhnyk.epam_finalproject_spring.util;
 
+import com.brazhnyk.epam_finalproject_spring.entity.Genre;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -52,7 +53,7 @@ public class InputValidator {
                                              String textEn,
                                              String textUa,
                                              String price,
-                                             String genre) {
+                                             Genre genre) {
         return validateTitleEn(titleEn)
                 && validateTitleUa(titleUa)
                 && validateText(textEn)
@@ -76,12 +77,9 @@ public class InputValidator {
      * @param genre - genre id input
      * @return validation result
      */
-    public static boolean validateGenre(String genre) {
-        try {
-            return genre != null && Integer.parseInt(genre) > 0;
-        } catch (NumberFormatException e) {
-            return false;
-        }
+    public static boolean validateGenre(Genre genre) {
+        return genre != null;
+
     }
 
     /**

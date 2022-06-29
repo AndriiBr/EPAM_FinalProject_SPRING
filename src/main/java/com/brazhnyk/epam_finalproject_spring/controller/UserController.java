@@ -8,7 +8,7 @@ import com.brazhnyk.epam_finalproject_spring.service.EditionService;
 import com.brazhnyk.epam_finalproject_spring.service.GenreService;
 import com.brazhnyk.epam_finalproject_spring.service.UserEditionService;
 import com.brazhnyk.epam_finalproject_spring.service.UserService;
-import com.brazhnyk.epam_finalproject_spring.util.PaginationPresetCreator;
+import com.brazhnyk.epam_finalproject_spring.util.PaginationPresetEngine;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
@@ -70,19 +70,21 @@ public class UserController {
     public String openSubscriptionsPage(@AuthenticationPrincipal User user,
                                         @RequestParam(name = "currentPage", required = false) String currentPage,
                                         @RequestParam(name = "recordsPerPage", required = false) String recordsPerPage,
+                                        @RequestParam(name = "genreFilter", required = false) Genre genreFilter,
+                                        @RequestParam(name = "orderBy", required = false) String orderBy,
                                         Model model) throws AuthenticationError {
 
-        Page<Edition> editionList = editionService.findAllOrdered(user, currentPage, recordsPerPage);
+        Page<Edition> editionList = editionService.findAllOrdered(user, currentPage, recordsPerPage, genreFilter, orderBy);
         List<Genre> genreList = genreService.findAllGenres();
 
         model.addAttribute("editionList", editionList);
         model.addAttribute("genreList", genreList);
 
-        model.addAttribute("pageNumbers", PaginationPresetCreator.preparePageNumbers(editionList));
-        model.addAttribute("itemStep", PaginationPresetCreator.prepareItemStep(3, 5, 7, 10));
+        model.addAttribute("pageNumbers", PaginationPresetEngine.preparePageNumbers(editionList));
+        model.addAttribute("itemStep", PaginationPresetEngine.prepareItemStep(3, 5, 7, 10));
         model.addAttribute("currentPage", currentPage != null ? currentPage : 1);
         model.addAttribute("recordsPerPage", recordsPerPage != null ? recordsPerPage : 5);
-        model.addAttribute("totalPages", PaginationPresetCreator.preparePageNumbers(editionList).size());
+        model.addAttribute("totalPages", PaginationPresetEngine.preparePageNumbers(editionList).size());
 
         return "edition_page/userEditions";
     }

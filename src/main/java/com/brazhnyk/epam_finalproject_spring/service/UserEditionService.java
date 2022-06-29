@@ -29,7 +29,7 @@ public class UserEditionService {
     //Test this case of transaction. Will it rollback if any operation is unsuccessful?
     @Transactional
     public void buyNewEdition(User user, Edition edition) {
-        int balanceResult = user.getBalance() - edition.getPrice();
+        int balanceResult = userRepo.findByUsername(user.getUsername()).getBalance() - edition.getPrice();
 
         if (balanceResult < 0) {
             return;

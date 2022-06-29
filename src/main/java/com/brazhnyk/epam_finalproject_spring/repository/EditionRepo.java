@@ -10,8 +10,17 @@ import org.springframework.data.jpa.repository.Query;
 import java.util.List;
 
 public interface EditionRepo extends JpaRepository<Edition, Long> {
+
     List<Edition> findAll();
 
+    @Query(
+            value = "select * from edition",
+            nativeQuery = true)
+    Page<Edition> findAll(Pageable pageable);
+
+    @Query(
+            value = "select * from edition where genre_id = ?",
+            nativeQuery = true)
     Page<Edition> findAllByGenre(Genre genre, Pageable pageable);
 
     @Query(

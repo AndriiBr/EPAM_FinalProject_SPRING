@@ -1,20 +1,19 @@
 package com.brazhnyk.epam_finalproject_spring.entity;
 
-import lombok.Data;
-import lombok.EqualsAndHashCode;
-import lombok.ToString;
+import lombok.*;
 
 import javax.persistence.*;
 import java.util.List;
 
 @Entity
 @Data
+@NoArgsConstructor
 @EqualsAndHashCode(of = {"id"})
 @ToString(of = {"id"})
 public class Edition {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     private String titleEn;
     private String titleUa;
@@ -30,7 +29,17 @@ public class Edition {
     private Genre genre;
 
     @OneToMany(
-            mappedBy = "user",
+            mappedBy = "edition",
+            cascade = CascadeType.REMOVE,
             orphanRemoval = true)
     private List<UserEdition> users;
+
+    public Edition(String titleEn, String titleUa, String textEn, String textUa, int price, Genre genre) {
+        this.titleEn = titleEn;
+        this.titleUa = titleUa;
+        this.textEn = textEn;
+        this.textUa = textUa;
+        this.price = price;
+        this.genre = genre;
+    }
 }

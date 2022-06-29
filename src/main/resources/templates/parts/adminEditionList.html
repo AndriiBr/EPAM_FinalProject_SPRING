@@ -3,7 +3,7 @@
         <div class="shadow p-3 mb-5 bg-body rounded">
             <!-- Add new edition button -->
             <div class="d-flex justify-content-end">
-                <form method="get" action="${pageContext.request.contextPath}/admin/edition/new-edition">
+                <form method="get" action="/admin/edition/new-edition">
                     <button type="submit" class="btn btn-success btn-sm mx-2 mb-3"
                             th:text="#{edition.add}">
                     </button>
@@ -51,10 +51,9 @@
                             th:text="#{edition.edit}">
                         </th>
                         <th class=" col-2 text-center fs-5" scope="col" id="delete"
-                            th:text="edition.delete">
+                            th:text="#{edition.delete}">
                         </th>
                     </div>
-                    >
                 </tr>
                 </thead>
 
@@ -133,3 +132,4 @@
     <script src="../../static/js/addUrlParameter.js"></script>
 
 
+</div>
