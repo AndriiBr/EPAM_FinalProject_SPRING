@@ -1,5 +1,6 @@
 package com.brazhnyk.epam_finalproject_spring.service;
 
+import com.brazhnyk.epam_finalproject_spring.entity.Role;
 import com.brazhnyk.epam_finalproject_spring.entity.User;
 import com.brazhnyk.epam_finalproject_spring.repository.UserRepo;
 import com.brazhnyk.epam_finalproject_spring.util.InputValidator;
@@ -11,6 +12,8 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
+
+import java.util.Set;
 
 @Service
 public class UserService implements UserDetailsService{
@@ -47,6 +50,22 @@ public class UserService implements UserDetailsService{
         }
         userFromDb.setBalance(userFromDb.getBalance() + value);
         userRepo.save(userFromDb);
+    }
+
+    public void updateUserRole(User user) {
+        if (user != null) {
+            Set<Role> newRoles = user.getRoles();
+            if (newRoles.contains(Role.ROLE_USER)) {
+                newRoles.remove(Role.ROLE_USER);
+                newRoles.add(Role.ROLE_BLOCKED);
+                user.setRoles(newRoles);
+            } else if (newRoles.contains(Role.ROLE_BLOCKED)) {
+                newRoles.remove(Role.ROLE_BLOCKED);
+                newRoles.add(Role.ROLE_USER);
+                user.setRoles(newRoles);
+            }
+            userRepo.save(user);
+        }
     }
 
     public Page<User> getUsersPage(String page, String records) {

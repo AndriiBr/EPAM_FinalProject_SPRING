@@ -37,7 +37,7 @@
                         </a>
                     </th>
 
-                    <div sec:authorize="isAuthenticated()">
+                    <div sec:authorize="hasAnyRole('ROLE_ADMIN', 'ROLE_USER')">
                         <th class=" col-2 text-center fs-5" scope="col" id="buy"
                             th:text="#{edition.buy}">
                         </th>
@@ -81,7 +81,7 @@
                         </div>
                     </td>
 
-                    <div sec:authorize="isAuthenticated()">
+                    <div sec:authorize="hasAnyRole('ROLE_ADMIN', 'ROLE_USER')">
                         <!-- Buy button -->
                         <td class="text-center">
                             <div class="d-flex justify-content-center">

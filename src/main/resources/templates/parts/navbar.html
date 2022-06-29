@@ -23,47 +23,48 @@
                             </a>
                         </li>
 
-                        <!--                    <c:if test="${not empty sessionScope.user}">-->
-                        <li class="nav-item dropdown">
-                            <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button"
-                               data-bs-toggle="dropdown" aria-expanded="false" th:text="#{navbar.cabinet}"></a>
-                            <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
-                                <li>
-                                    <a class="dropdown-item"
-                                       th:href="@{/user/subscriptions}"
-                                       th:text="#{navbar.subscriptions}"></a>
-                                </li>
-                                <li>
-                                    <hr class="dropdown-divider">
-                                </li>
-                                <li>
-                                    <a class="dropdown-item" th:href="@{/user/wallet}"
-                                       th:text="#{navbar.wallet}"></a>
-                                </li>
-                            </ul>
-                        </li>
-                        <!--                    </c:if>-->
+                        <div sec:authorize="isAuthenticated()">
+                            <li class="nav-item dropdown">
+                                <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button"
+                                   data-bs-toggle="dropdown" aria-expanded="false" th:text="#{navbar.cabinet}"></a>
+                                <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
+                                    <li>
+                                        <a class="dropdown-item"
+                                           th:href="@{/user/subscriptions}"
+                                           th:text="#{navbar.subscriptions}"></a>
+                                    </li>
+                                    <li>
+                                        <hr class="dropdown-divider">
+                                    </li>
+                                    <li>
+                                        <a class="dropdown-item" th:href="@{/user/wallet}"
+                                           th:text="#{navbar.wallet}"></a>
+                                    </li>
+                                </ul>
+                            </li>
+                        </div>
 
-                        <!--                    <c:if test="${sessionScope.user.role eq '3'}">-->
-                        <li class="nav-item dropdown">
-                            <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown2" role="button"
-                               data-bs-toggle="dropdown" aria-expanded="false"
-                               th:text="#{navbar.admin_console}"></a>
-                            <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
-                                <li>
-                                    <a class="dropdown-item" th:href="@{/admin/edition}"
-                                       th:text="#{navbar.edition_list}"></a>
-                                </li>
-                                <li>
-                                    <hr class="dropdown-divider">
-                                </li>
-                                <li>
-                                    <a class="dropdown-item" th:href="@{/admin/user-list}"
-                                       th:text="#{navbar.user_list}"></a>
-                                </li>
-                            </ul>
-                        </li>
-                        <!--                    </c:if>-->
+
+                        <div sec:authorize="hasRole('ROLE_ADMIN')">
+                            <li class="nav-item dropdown">
+                                <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown2" role="button"
+                                   data-bs-toggle="dropdown" aria-expanded="false"
+                                   th:text="#{navbar.admin_console}"></a>
+                                <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
+                                    <li>
+                                        <a class="dropdown-item" th:href="@{/admin/edition}"
+                                           th:text="#{navbar.edition_list}"></a>
+                                    </li>
+                                    <li>
+                                        <hr class="dropdown-divider">
+                                    </li>
+                                    <li>
+                                        <a class="dropdown-item" th:href="@{/admin/user-list}"
+                                           th:text="#{navbar.user_list}"></a>
+                                    </li>
+                                </ul>
+                            </li>
+                        </div>
 
                     </ul>
 
@@ -76,8 +77,10 @@
                         </button>
                     </form>
 
-                    <button class="btn flag-icon flag-icon-gb btn-lg mx-1" onclick="executeUrlParameter('lang', 'en')"></button>
-                    <button class="btn flag-icon flag-icon-ua btn-lg mx-1" onclick="executeUrlParameter('lang', 'ua')"></button>
+                    <button class="btn flag-icon flag-icon-gb btn-lg mx-1"
+                            onclick="executeUrlParameter('lang', 'en')"></button>
+                    <button class="btn flag-icon flag-icon-ua btn-lg mx-1"
+                            onclick="executeUrlParameter('lang', 'ua')"></button>
 
                     <ul class="navbar-nav me-1 ml-2 mb-lg-0">
                         <li class="nav-item" sec:authorize="isAnonymous()">

@@ -10,6 +10,7 @@ import com.brazhnyk.epam_finalproject_spring.service.UserService;
 import com.brazhnyk.epam_finalproject_spring.util.PaginationPresetEngine;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -65,6 +66,7 @@ public class ShopController {
         return "edition_page/mainEditions";
     }
 
+    @PreAuthorize("hasAnyAuthority('ROLE_USER', 'ROLE_ADMIN')")
     @GetMapping("/buy")
     public String openBuyPage(@AuthenticationPrincipal User user,
                               @RequestParam(name = "buy_edition_id") Edition edition, Model model) {
@@ -85,6 +87,7 @@ public class ShopController {
         return "redirect:/";
     }
 
+    @PreAuthorize("hasAnyAuthority('ROLE_USER', 'ROLE_ADMIN')")
     @PostMapping("/buy")
     public String buyEdition(@AuthenticationPrincipal User user, @RequestParam(name = "buy_edition_id") Edition edition) {
        userEditionService.buyNewEdition(user, edition);

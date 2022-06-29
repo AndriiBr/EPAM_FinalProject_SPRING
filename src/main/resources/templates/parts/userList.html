@@ -33,7 +33,6 @@
             </thead>
 
             <tbody class="table-group-divider">
-            <c:forEach var="userM" items="${requestScope.userList}">
                 <tr th:each="user :${userList}" th:id="${user.id}">
                     <td class="text-center">
                         <div class="fw-bold fs-5"
@@ -60,65 +59,72 @@
                     </td>
 
                     <td class="text-center">
-                        <c:set var="key" value="${userM.role}"/>
-                        <c:forEach var="role" items="${requestScope.roleList}">
-                            <c:choose>
-                                <c:when test="${userM.role == role.id}">
+<!--                        <div th:if="${user.roles.contains(Role.ROLE_ADMIN)}">-->
+<!--                            <span class="badge text-bg-primary fs-6"></span>-->
+<!--                        </div>-->
+                        <div
+                                th:text="${user.roles}">
 
-                                    <c:choose>
-                                        <c:when test="${userM.role eq '3'}">
-                                                <span class="badge text-bg-primary fs-6">
-                                        </c:when>
-                                        <c:when test="${userM.role eq '2'}">
-                                                <span class="badge text-bg-success fs-6">
-                                        </c:when>
-                                        <c:when test="${userM.role eq '0'}">
-                                                <span class="badge text-bg-danger fs-6">
-                                        </c:when>
-                                    </c:choose>
+                        </div>
 
-                                    <c:choose>
-                                        <c:when test="${language == 'ua'}">
-                                            <c:out value="${role.roleUa}"/>
-                                        </c:when>
-                                        <c:otherwise>
-                                            <c:out value="${role.roleEn}"/>
-                                        </c:otherwise>
-                                    </c:choose>
-                                </c:when>
-                            </c:choose>
-                        </c:forEach>
+<!--                        <c:set var="key" value="${userM.role}"/>-->
+<!--                        <c:forEach var="role" items="${requestScope.roleList}">-->
+<!--                            <c:choose>-->
+<!--                                <c:when test="${userM.role == role.id}">-->
+
+<!--                                    <c:choose>-->
+<!--                                        <c:when test="${userM.role eq '3'}">-->
+<!--                                                <span class="badge text-bg-primary fs-6">-->
+<!--                                        </c:when>-->
+<!--                                        <c:when test="${userM.role eq '2'}">-->
+<!--                                                <span class="badge text-bg-success fs-6">-->
+<!--                                        </c:when>-->
+<!--                                        <c:when test="${userM.role eq '0'}">-->
+<!--                                                <span class="badge text-bg-danger fs-6">-->
+<!--                                        </c:when>-->
+<!--                                    </c:choose>-->
+
+<!--                                    <c:choose>-->
+<!--                                        <c:when test="${language == 'ua'}">-->
+<!--                                            <c:out value="${role.roleUa}"/>-->
+<!--                                        </c:when>-->
+<!--                                        <c:otherwise>-->
+<!--                                            <c:out value="${role.roleEn}"/>-->
+<!--                                        </c:otherwise>-->
+<!--                                    </c:choose>-->
+<!--                                </c:when>-->
+<!--                            </c:choose>-->
+<!--                        </c:forEach>-->
                         </span>
                     </td>
 
                     <c:if test="${sessionScope.user.role eq '3'}">
                         <td class="text-center">
-                            <form method="post" action="${pageContext.request.contextPath}/admin/user-list/block">
+                            <form method="post" action="/admin/user-list/block">
                                 <c:choose>
                                     <c:when test="${userM.role eq '2'}">
                                         <button type="submit"
                                                 id="user_block"
                                                 name="user_block"
-                                                value="${userM.id}"
-                                                class="btn btn-danger mx-1">
-                                            <fmt:message key="user.block" bundle="${user}"/>
+                                                th:value="${user.id}"
+                                                class="btn btn-danger mx-1"
+                                                th:text="#{user.block}">
                                         </button>
                                     </c:when>
-                                    <c:when test="${userM.role eq '0'}">
-                                        <button type="submit"
-                                                id="user_block"
-                                                name="user_block"
-                                                value="${userM.id}"
-                                                class="btn btn-success mx-1">
-                                            <fmt:message key="user.unblock" bundle="${user}"/>
-                                        </button>
-                                    </c:when>
+<!--                                    <c:when test="${userM.role eq '0'}">-->
+<!--                                        <button type="submit"-->
+<!--                                                id="user_unblock"-->
+<!--                                                name="user_block"-->
+<!--                                                th:value="${user.id}"-->
+<!--                                                class="btn btn-success mx-1"-->
+<!--                                                th:text="#{user.unblock}">-->
+<!--                                        </button>-->
+<!--                                    </c:when>-->
                                 </c:choose>
                             </form>
                         </td>
                     </c:if>
                 </tr>
-            </c:forEach>
             </tbody>
         </table>
     </div>

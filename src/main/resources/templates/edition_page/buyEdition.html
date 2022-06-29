@@ -97,26 +97,29 @@
                 </div>
             </div>
 
-
-            <div class="fadeIn fifth">
-                <form method="post">
-                    <button class="btn btn-info btn-lg btn-block mb-3" type="submit"
-                            th:text="#{edition.buy}">
-                    </button>
-                </form>
+            <div sec:authorize="hasAnyRole('ROLE_ADMIN', 'ROLE_USER')">
+                <div class="fadeIn fifth">
+                    <form method="post">
+                        <button class="btn btn-info btn-lg btn-block mb-3" type="submit"
+                                th:text="#{edition.buy}">
+                        </button>
+                    </form>
+                </div>
             </div>
+
         </div>
 
 
         <div id="formFooter">
             <div class="fadeIn sixth">
-                <c:if test="${(sessionScope.user.role eq '3' or sessionScope.user.role eq '2') and requestScope.remainingBalance < 0}">
+                <div sec:authorize="hasAnyRole('ROLE_ADMIN', 'ROLE_USER')">
                     <div class="d-flex justify-content-center pb-lg-2 user_wallet">
                         <a class="link-info" th:href="@{/user/wallet/top_up}"
                            th:text="#{user.wallet.top_up}">
                         </a>
                     </div>
-                </c:if>
+                </div>
+
                 <div class="d-flex justify-content-center pb-lg-2 user_wallet">
                     <a class="link-info" th:href="@{/}"
                        th:text="#{user.main_page}">

@@ -11,6 +11,7 @@ import com.brazhnyk.epam_finalproject_spring.util.PaginationPresetEngine;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.domain.Page;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -25,6 +26,7 @@ import java.util.List;
 import java.util.UUID;
 
 @Controller
+@PreAuthorize("hasAuthority('ROLE_ADMIN')")
 @RequestMapping("/admin")
 public class AdminController {
 
@@ -47,6 +49,7 @@ public class AdminController {
         this.genreService = genreService;
     }
 
+    @PreAuthorize("hasAuthority('ROLE_ADMIN')")
     @GetMapping("/user-list")
     public String openUserListPage(@RequestParam(name = "currentPage", required = false) String currentPage,
                                    @RequestParam(name = "recordsPerPage", required = false) String recordsPerPage,
@@ -158,6 +161,25 @@ public class AdminController {
         return REDIRECT_TO_ADMIN_EDITIONS;
     }
 
+    @PostMapping("/user-list/block")
+    public String userBlockUnblock(@RequestParam("user_block") User user) {
+
+        userService.updateUserRole(user);
+
+        return "redirect:/admin/user-list";
+    }
+
+    /**
+     * Update edition entity
+     * @param edition - edition entity
+     * @param titleEn - title En.
+     * @param titleUa - title Ua.
+     * @param textEn - text En.
+     * @param textUa - text Ua
+     * @param price - price
+     * @param genre - genre
+     * @return TRUE - if validation and update were success.
+     */
     private boolean updateEdition(Edition edition,
                                String titleEn,
                                String titleUa,

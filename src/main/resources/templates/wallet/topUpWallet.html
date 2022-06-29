@@ -61,37 +61,40 @@
             </div>
         </div>
 
-        <div class="fadeIn fourth">
-            <form name="balance_form" method="post">
-                <div class="field money">
-                    <div class="input-area ">
-                        <label class="d-flex justify-content-center fw-bold" for="money"
-                               th:text="#{user.wallet.top_up}">
-                        </label>
-                        <div class="d-flex justify-content-center">
-                            <input type="text" id="money" class="fadeIn third form-control form-control-lg" name="money"
-                                   th:placeholder="#{user.wallet.enter_amount}"/>
+        <div sec:authorize="hasAnyRole('ROLE_ADMIN', 'ROLE_USER')">
+            <div class="fadeIn fourth">
+                <form name="balance_form" method="post">
+                    <div class="field money">
+                        <div class="input-area ">
+                            <label class="d-flex justify-content-center fw-bold" for="money"
+                                   th:text="#{user.wallet.top_up}">
+                            </label>
+                            <div class="d-flex justify-content-center">
+                                <input type="text" id="money" class="fadeIn third form-control form-control-lg"
+                                       name="money"
+                                       th:placeholder="#{user.wallet.enter_amount}"/>
+                            </div>
                         </div>
+                        <div class="error error-text"></div>
                     </div>
-                    <div class="error error-text"></div>
-                </div>
 
 
-                <!-- Submit button -->
-                <div class="d-flex justify-content-center pt-1 mb-4 mt-4">
-                    <button class="btn btn-info btn-lg btn-block" type="submit"
-                            th:text="#{user.wallet.top_up}">
-                    </button>
-                </div>
+                    <!-- Submit button -->
+                    <div class="d-flex justify-content-center pt-1 mb-4 mt-4">
+                        <button class="btn btn-info btn-lg btn-block" type="submit"
+                                th:text="#{user.wallet.top_up}">
+                        </button>
+                    </div>
 
-            </form>
+                </form>
+            </div>
         </div>
 
         <div id="formFooter">
             <div class="fadeIn sixth">
-                    <a class="underlineHover" th:href="@{/}"
-                       th:text="#{user.main_page}">
-                    </a>
+                <a class="underlineHover" th:href="@{/}"
+                   th:text="#{user.main_page}">
+                </a>
             </div>
         </div>
     </div>

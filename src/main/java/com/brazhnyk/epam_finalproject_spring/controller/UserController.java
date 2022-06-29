@@ -11,6 +11,7 @@ import com.brazhnyk.epam_finalproject_spring.service.UserService;
 import com.brazhnyk.epam_finalproject_spring.util.PaginationPresetEngine;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -50,6 +51,7 @@ public class UserController {
         return "wallet/wallet";
     }
 
+    @PreAuthorize("hasAnyAuthority('ROLE_USER', 'ROLE_ADMIN')")
     @GetMapping("/wallet/top_up")
     public String openWalletTopUpPage(@AuthenticationPrincipal User user, Model model) {
         User userFromDb = userService.findUserByUsername(user.getUsername());
@@ -59,6 +61,7 @@ public class UserController {
         return "wallet/topUpWallet";
     }
 
+    @PreAuthorize("hasAnyAuthority('ROLE_USER', 'ROLE_ADMIN')")
     @PostMapping("/wallet/top_up")
     public String topUpWallet(@AuthenticationPrincipal User user, @RequestParam String money) {
         userService.topUpBalance(user, money);
