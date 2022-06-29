@@ -6,6 +6,7 @@ import com.brazhnyk.epam_finalproject_spring.entity.User;
 import com.brazhnyk.epam_finalproject_spring.exception.AuthenticationError;
 import com.brazhnyk.epam_finalproject_spring.service.EditionService;
 import com.brazhnyk.epam_finalproject_spring.service.GenreService;
+import com.brazhnyk.epam_finalproject_spring.service.UserEditionService;
 import com.brazhnyk.epam_finalproject_spring.service.UserService;
 import com.brazhnyk.epam_finalproject_spring.util.PaginationPresetCreator;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -27,12 +28,17 @@ public class UserController {
     private final UserService userService;
     private final EditionService editionService;
     private final GenreService genreService;
+    private final UserEditionService userEditionService;
 
     @Autowired
-    public UserController(UserService userService, EditionService editionService, GenreService genreService) {
+    public UserController(UserService userService,
+                          EditionService editionService,
+                          GenreService genreService,
+                          UserEditionService userEditionService) {
         this.userService = userService;
         this.editionService = editionService;
         this.genreService = genreService;
+        this.userEditionService = userEditionService;
     }
 
     @GetMapping("/wallet")
@@ -79,5 +85,14 @@ public class UserController {
         model.addAttribute("totalPages", PaginationPresetCreator.preparePageNumbers(editionList).size());
 
         return "edition_page/userEditions";
+    }
+
+    @PostMapping("/subscriptions/unsubscribe")
+    public String unsubscribe (@AuthenticationPrincipal User user,
+                               @RequestParam(name = "unsubscribe_edition_id") Edition edition) {
+
+        Integer result = userEditionService.unsubscribe(user, edition);
+
+        return "redirect:/user/subscriptions";
     }
 }

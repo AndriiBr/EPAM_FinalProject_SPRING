@@ -1,6 +1,7 @@
 package com.brazhnyk.epam_finalproject_spring.service;
 
 import com.brazhnyk.epam_finalproject_spring.entity.Edition;
+import com.brazhnyk.epam_finalproject_spring.entity.Genre;
 import com.brazhnyk.epam_finalproject_spring.entity.User;
 import com.brazhnyk.epam_finalproject_spring.exception.AuthenticationError;
 import com.brazhnyk.epam_finalproject_spring.repository.EditionRepo;
@@ -70,16 +71,25 @@ public class EditionService {
         return editionRepo.findAll(pageable);
     }
 
-    public Page<Edition> findAllNotOrdered(User user, String page, String records) {
+    public Page<Edition> findAllNotOrdered(User user, String page, String records, Genre genre) {
         int currentPage = InputValidator.validateNumberValue(page) ? Integer.parseInt(page) : CURRENT_PAGE;
         int recordsPerPage = InputValidator.validateNumberValue(records) ? Integer.parseInt(records) : RECORDS_PER_PAGE;
 
         Pageable pageable = PageRequest.of(currentPage - 1, recordsPerPage);
 
-        if (user == null) {
-            return editionRepo.findAll(pageable);
+        if (genre == null) {
+            if (user == null) {
+                return editionRepo.findAll(pageable);
+            } else {
+                return editionRepo.findAllByUserIdNotIn(user.getId(), pageable);
+            }
+
         } else {
-            return editionRepo.findAllByUserIdNotIn(user.getId(), pageable);
+            if (user == null) {
+                return editionRepo.findAllByGenre(genre, pageable);
+            } else {
+                return editionRepo.findAllByGenreAndUserIdNotIn(genre, user.getId(), pageable);
+            }
         }
     }
 

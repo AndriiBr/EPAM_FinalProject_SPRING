@@ -88,7 +88,7 @@
                                 <form class="container" action="/user/subscriptions/unsubscribe" method="post">
                                     <div class="clearfix">
                                         <button type="submit" name="unsubscribe_edition_id" th:value="${edition.id}"
-                                                class="btn btn-warning btn-sm fw-bold mx-1"
+                                                class="btn btn-danger btn-sm fw-bold mx-1"
                                                 th:text="#{edition.unsubscribe}">
                                         </button>
                                     </div>
@@ -102,6 +102,6 @@
         </div>
     </div>
 
-    <script src="${pageContext.request.contextPath}/js/addUrlParameter.js"></script>
+    <script src="../../static/js/addUrlParameter.js"></script>
 
-
+</div>
