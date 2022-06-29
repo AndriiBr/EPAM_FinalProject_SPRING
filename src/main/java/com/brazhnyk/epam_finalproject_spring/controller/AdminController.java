@@ -49,6 +49,7 @@ public class AdminController {
         this.genreService = genreService;
     }
 
+
     @PreAuthorize("hasAuthority('ROLE_ADMIN')")
     @GetMapping("/user-list")
     public String openUserListPage(@RequestParam(name = "currentPage", required = false) String currentPage,
@@ -66,6 +67,7 @@ public class AdminController {
 
         return "admin/users";
     }
+
 
     @GetMapping("/edition")
     public String openEditionListPage(@RequestParam(name = "currentPage", required = false) String currentPage,
@@ -205,7 +207,7 @@ public class AdminController {
      * @param edition - edition to be updated
      * @throws IOException when cannot save file
      */
-    private void saveImage(MultipartFile file, Edition edition) throws IOException {
+    public void saveImage(MultipartFile file, Edition edition) throws IOException {
         if(file != null) {
             File uploadDir = new File(uploadPath);
 

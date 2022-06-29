@@ -32,6 +32,11 @@ public class UserService implements UserDetailsService{
         return userRepo.findByUsername(username);
     }
 
+    /**
+     * Find user in DB
+     * @param username - username
+     * @return user entity
+     */
     public User findUserByUsername(String username) {
         return userRepo.findByUsername(username);
     }
@@ -52,6 +57,10 @@ public class UserService implements UserDetailsService{
         userRepo.save(userFromDb);
     }
 
+    /**
+     * Block/Unblock provided user
+     * @param user - user entity
+     */
     public void updateUserRole(User user) {
         if (user != null) {
             Set<Role> newRoles = user.getRoles();
@@ -68,6 +77,12 @@ public class UserService implements UserDetailsService{
         }
     }
 
+    /**
+     * Prepare page pf users
+     * @param page - page number
+     * @param records - records per page
+     * @return page pf users
+     */
     public Page<User> getUsersPage(String page, String records) {
         int currentPage = InputValidator.validateNumberValue(page) ? Integer.parseInt(page) : CURRENT_PAGE;
         int recordsPerPage = InputValidator.validateNumberValue(records) ? Integer.parseInt(records) : RECORDS_PER_PAGE;
