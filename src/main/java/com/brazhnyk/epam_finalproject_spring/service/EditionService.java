@@ -9,12 +9,14 @@ import com.brazhnyk.epam_finalproject_spring.util.InputValidator;
 import com.brazhnyk.epam_finalproject_spring.util.PaginationPresetEngine;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.i18n.LocaleContextHolder;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
+import java.util.Locale;
 import java.util.Optional;
 
 import static com.brazhnyk.epam_finalproject_spring.util.PaginationPresetEngine.CURRENT_PAGE;
@@ -78,6 +80,7 @@ public class EditionService {
     public Page<Edition> findAllNotOrdered(User user, String page, String records, Genre genre, String orderBy) {
 
         Pageable pageable = PaginationPresetEngine.definePageableByParam(page, records, orderBy);
+
 
         if (genre == null) {
             if (user == null) {

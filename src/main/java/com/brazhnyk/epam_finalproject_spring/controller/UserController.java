@@ -77,17 +77,13 @@ public class UserController {
                                         @RequestParam(name = "orderBy", required = false) String orderBy,
                                         Model model) throws AuthenticationError {
 
-        Page<Edition> editionList = editionService.findAllOrdered(user, currentPage, recordsPerPage, genreFilter, orderBy);
-        List<Genre> genreList = genreService.findAllGenres();
+        Page<Edition> page = editionService.findAllOrdered(user, currentPage, recordsPerPage, genreFilter, orderBy);
+        model.addAttribute("editionList", page);
 
-        model.addAttribute("editionList", editionList);
+        List<Genre> genreList = genreService.findAllGenres();
         model.addAttribute("genreList", genreList);
 
-        model.addAttribute("pageNumbers", PaginationPresetEngine.preparePageNumbers(editionList));
-        model.addAttribute("itemStep", PaginationPresetEngine.prepareItemStep(3, 5, 7, 10));
-        model.addAttribute("currentPage", currentPage != null ? currentPage : 1);
-        model.addAttribute("recordsPerPage", recordsPerPage != null ? recordsPerPage : 5);
-        model.addAttribute("totalPages", PaginationPresetEngine.preparePageNumbers(editionList).size());
+        PaginationPresetEngine.updateModelForPagination(model, page, currentPage, recordsPerPage);
 
         return "edition_page/userEditions";
     }
@@ -96,7 +92,7 @@ public class UserController {
     public String unsubscribe (@AuthenticationPrincipal User user,
                                @RequestParam(name = "unsubscribe_edition_id") Edition edition) {
 
-        Integer result = userEditionService.unsubscribe(user, edition);
+        userEditionService.unsubscribe(user, edition);
 
         return "redirect:/user/subscriptions";
     }

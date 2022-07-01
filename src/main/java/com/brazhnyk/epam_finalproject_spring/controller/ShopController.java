@@ -45,23 +45,14 @@ public class ShopController {
                               @RequestParam(name = "genreFilter", required = false) Genre genreFilter,
                               @RequestParam(name = "orderBy", required = false) String orderBy,
                               Model model) {
-        Page<Edition> editionList = editionService
+        Page<Edition> page = editionService
                 .findAllNotOrdered(user, currentPage, recordsPerPage, genreFilter, orderBy);
+        model.addAttribute("editionList", page);
 
         List<Genre> genreList = genreService.findAllGenres();
-
-        model.addAttribute("editionList", editionList);
         model.addAttribute("genreList", genreList);
 
-        model.addAttribute("pageNumbers", PaginationPresetEngine.preparePageNumbers(editionList));
-        model.addAttribute("itemStep", PaginationPresetEngine.prepareItemStep(3, 5, 7, 10));
-        model.addAttribute("currentPage", currentPage != null ? currentPage : 1);
-        model.addAttribute("recordsPerPage", recordsPerPage != null ? recordsPerPage : 5);
-        model.addAttribute("totalPages", PaginationPresetEngine.preparePageNumbers(editionList).size());
-
-        if (genreFilter != null) {
-            model.addAttribute("genreFilter", genreFilter);
-        }
+        PaginationPresetEngine.updateModelForPagination(model, page, currentPage, recordsPerPage);
 
         return "edition_page/mainEditions";
     }
@@ -93,5 +84,19 @@ public class ShopController {
        userEditionService.buyNewEdition(user, edition);
 
         return "redirect:/";
+    }
+
+    @PostMapping("/search")
+    public String searchItem(@RequestParam(name = "currentPage", required = false) String currentPage,
+                             @RequestParam(name = "recordsPerPage", required = false) String recordsPerPage,
+                             @RequestParam(name = "genreFilter", required = false) Genre genreFilter,
+                             @RequestParam(name = "orderBy", required = false) String orderBy,
+                             @RequestParam(name = "search") String searchName,
+                             Model model) {
+
+//        Page<Edition> page = null;
+
+
+        return "edition_page/mainEditions";
     }
 }

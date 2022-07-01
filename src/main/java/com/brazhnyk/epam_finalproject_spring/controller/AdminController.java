@@ -55,15 +55,10 @@ public class AdminController {
     public String openUserListPage(@RequestParam(name = "currentPage", required = false) String currentPage,
                                    @RequestParam(name = "recordsPerPage", required = false) String recordsPerPage,
                                    Model model) {
-        Page<User> userList = userService.getUsersPage(currentPage, recordsPerPage);
+        Page<User> page = userService.getUsersPage(currentPage, recordsPerPage);
+        model.addAttribute("userList", page);
 
-        model.addAttribute("userList", userList);
-
-        model.addAttribute("pageNumbers", PaginationPresetEngine.preparePageNumbers(userList));
-        model.addAttribute("itemStep", PaginationPresetEngine.prepareItemStep(3, 5, 7, 10));
-        model.addAttribute("currentPage", currentPage != null ? currentPage : 1);
-        model.addAttribute("recordsPerPage", recordsPerPage != null ? recordsPerPage : 5);
-        model.addAttribute("totalPages", PaginationPresetEngine.preparePageNumbers(userList).size());
+        PaginationPresetEngine.updateModelForPagination(model, page, currentPage, recordsPerPage);
 
         return "admin/users";
     }
@@ -75,17 +70,13 @@ public class AdminController {
                                       @RequestParam(name = "genreFilter", required = false) Genre genreFilter,
                                       @RequestParam(name = "orderBy", required = false) String orderBy,
                                       Model model) {
-        Page<Edition> editionList = editionService.findAll(currentPage, recordsPerPage, genreFilter, orderBy);
-        List<Genre> genreList = genreService.findAllGenres();
+        Page<Edition> page = editionService.findAll(currentPage, recordsPerPage, genreFilter, orderBy);
+        model.addAttribute("editionList", page);
 
-        model.addAttribute("editionList", editionList);
+        List<Genre> genreList = genreService.findAllGenres();
         model.addAttribute("genreList", genreList);
 
-        model.addAttribute("pageNumbers", PaginationPresetEngine.preparePageNumbers(editionList));
-        model.addAttribute("itemStep", PaginationPresetEngine.prepareItemStep(3, 5, 7, 10));
-        model.addAttribute("currentPage", currentPage != null ? currentPage : 1);
-        model.addAttribute("recordsPerPage", recordsPerPage != null ? recordsPerPage : 5);
-        model.addAttribute("totalPages", PaginationPresetEngine.preparePageNumbers(editionList).size());
+        PaginationPresetEngine.updateModelForPagination(model, page, currentPage, recordsPerPage);
 
         return "admin/adminEditions";
     }
@@ -148,7 +139,7 @@ public class AdminController {
                                 @RequestParam("text_en") String textEn,
                                 @RequestParam("text_ua") String textUa,
                                 @RequestParam("price") String price,
-                                @RequestParam("genre") Genre genre,
+                                @RequestParam(name = "genre", required = false) Genre genre,
                                 @RequestParam("file-name")MultipartFile file) throws IOException {
 
         if (edition != null) {
@@ -193,7 +184,9 @@ public class AdminController {
             edition.setTextEn(textEn);
             edition.setTextUa(textUa);
             edition.setPrice(Integer.parseInt(price));
-            edition.setGenre(genre);
+            if (genre != null) {
+                edition.setGenre(genre);
+            }
 
             return true;
         } else {
@@ -208,7 +201,7 @@ public class AdminController {
      * @throws IOException when cannot save file
      */
     public void saveImage(MultipartFile file, Edition edition) throws IOException {
-        if(file != null) {
+        if(file != null && !file.isEmpty()) {
             File uploadDir = new File(uploadPath);
 
             if (!uploadDir.exists()) {

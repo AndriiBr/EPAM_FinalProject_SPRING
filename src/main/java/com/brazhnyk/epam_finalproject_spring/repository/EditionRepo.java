@@ -42,7 +42,4 @@ public interface EditionRepo extends JpaRepository<Edition, Long> {
             value = "select * from edition where genre_id = ? and id in(select edition_id from user_edition where user_id = ?)",
             nativeQuery = true)
     Page<Edition> findAllByGenreAndUserIdIn(Genre genre, Long userId, Pageable pageable);
-
-
-
 }

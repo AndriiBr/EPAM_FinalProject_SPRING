@@ -5,6 +5,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
+import org.springframework.ui.Model;
 
 import java.util.Arrays;
 import java.util.List;
@@ -22,30 +23,6 @@ public class PaginationPresetEngine {
     public static final int CURRENT_PAGE = 1;
 
     private PaginationPresetEngine() {
-    }
-
-    /**
-     * Prepare List of Integers for pagination bar ->
-     * provides different variants how many records will be rendered at the final page
-     * @param values - variants to be prepared
-     * @return list of variants
-     */
-    public static List<Integer> prepareItemStep(int... values) {
-        return Arrays.stream(values).boxed().collect(Collectors.toList());
-    }
-
-    /**
-     * Prepare List of Integers for pagination bar ->
-     * provides available page numbers from 1 to "totalPages" from Page entity
-     * @param page - Page entity
-     * @return list of page numbers. If page is empty - than return list with 1
-     */
-    public static  <T> List<Integer> preparePageNumbers(Page<T> page) {
-        int totalPages = page.getTotalPages() > 0 ? page.getTotalPages() : 1;
-
-        return IntStream.rangeClosed(1, totalPages)
-                .boxed()
-                .collect(Collectors.toList());
     }
 
     /**
@@ -77,5 +54,46 @@ public class PaginationPresetEngine {
         }
 
         return pageableResult;
+    }
+
+    /**
+     * Fulfill model with parameters for pagination bar.
+     * @param model - model to be updated
+     * @param page - collection of elements from DB.
+     * @param currentPage - number of current page
+     * @param recordsPerPage - number of records per page
+     * @param <T> - entity type in collection from DB.
+     */
+    public static <T> void updateModelForPagination(Model model, Page<T> page, String currentPage, String recordsPerPage) {
+        model.addAttribute("pageNumbers", preparePageNumbers(page));
+        model.addAttribute("itemStep", prepareItemStep(3, 5, 7, 10));
+        model.addAttribute("totalPages", preparePageNumbers(page).size());
+
+        model.addAttribute("currentPage", currentPage != null ? currentPage : CURRENT_PAGE);
+        model.addAttribute("recordsPerPage", recordsPerPage != null ? recordsPerPage : RECORDS_PER_PAGE);
+    }
+
+    /**
+     * Prepare List of Integers for pagination bar ->
+     * provides different variants how many records will be rendered at the final page
+     * @param values - variants to be prepared
+     * @return list of variants
+     */
+    private static List<Integer> prepareItemStep(int... values) {
+        return Arrays.stream(values).boxed().collect(Collectors.toList());
+    }
+
+    /**
+     * Prepare List of Integers for pagination bar ->
+     * provides available page numbers from 1 to "totalPages" from Page entity
+     * @param page - Page entity
+     * @return list of page numbers. If page is empty - than return list with 1
+     */
+    private static  <T> List<Integer> preparePageNumbers(Page<T> page) {
+        int totalPages = page.getTotalPages() > 0 ? page.getTotalPages() : 1;
+
+        return IntStream.rangeClosed(1, totalPages)
+                .boxed()
+                .collect(Collectors.toList());
     }
 }
