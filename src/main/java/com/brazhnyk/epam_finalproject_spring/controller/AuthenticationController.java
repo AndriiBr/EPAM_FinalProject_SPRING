@@ -1,26 +1,24 @@
 package com.brazhnyk.epam_finalproject_spring.controller;
 
-import com.brazhnyk.epam_finalproject_spring.entity.Role;
-import com.brazhnyk.epam_finalproject_spring.entity.User;
-import com.brazhnyk.epam_finalproject_spring.repository.UserRepo;
+import com.brazhnyk.epam_finalproject_spring.exception.AuthenticationError;
+import com.brazhnyk.epam_finalproject_spring.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
-
-import java.util.Collections;
+import org.springframework.web.bind.annotation.RequestParam;
 
 @Controller
 @RequestMapping
 public class AuthenticationController {
 
-    private final UserRepo userRepo;
+    private final UserService userService;
 
     @Autowired
-    public AuthenticationController(UserRepo userRepo) {
-        this.userRepo = userRepo;
+    public AuthenticationController(UserService userService) {
+        this.userService = userService;
     }
 
     @GetMapping("/registration")
@@ -39,17 +37,17 @@ public class AuthenticationController {
     }
 
     @PostMapping("/registration")
-    public String addNewUser(User user, Model model) {
-        User userFromDb = userRepo.findByUsername(user.getUsername());
+    public String addNewUser(@RequestParam("username") String username,
+                             @RequestParam("email") String email,
+                             @RequestParam("password") String password,
+                             @RequestParam("password_confirm") String passwordConfirm,
+                             Model model) throws AuthenticationError {
+        String result = userService.saveNewUser(username, email, password, passwordConfirm);
 
-        if (userFromDb != null) {
-            String message = String.format("User %s is already exists!", user.getUsername());
-            model.addAttribute("errorMessage", message);
+        if (!result.isEmpty()) {
+            model.addAttribute("errorMessage", result);
             return "login_page/registrationFail";
         }
-
-        user.setRoles(Collections.singleton(Role.ROLE_USER));
-        userRepo.save(user);
 
         return "redirect:/login";
     }

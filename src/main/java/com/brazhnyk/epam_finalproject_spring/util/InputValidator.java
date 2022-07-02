@@ -11,16 +11,6 @@ public class InputValidator {
     private InputValidator() {}
 
     /**
-     * Validate user login form
-     * @param login - User login
-     * @param password - User password
-     * @return result of validation
-     */
-    public static boolean validateLoginPassword(String login, String password) {
-        return validateLogin(login) && validatePassword(password);
-    }
-
-    /**
      * Validate user registration form
      * @param login - User login
      * @param email - User email

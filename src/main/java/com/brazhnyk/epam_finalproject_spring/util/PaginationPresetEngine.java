@@ -64,13 +64,15 @@ public class PaginationPresetEngine {
      * @param recordsPerPage - number of records per page
      * @param <T> - entity type in collection from DB.
      */
-    public static <T> void updateModelForPagination(Model model, Page<T> page, String currentPage, String recordsPerPage) {
+    public static <T> boolean updateModelForPagination(Model model, Page<T> page, String currentPage, String recordsPerPage) {
         model.addAttribute("pageNumbers", preparePageNumbers(page));
         model.addAttribute("itemStep", prepareItemStep(3, 5, 7, 10));
         model.addAttribute("totalPages", preparePageNumbers(page).size());
 
         model.addAttribute("currentPage", currentPage != null ? currentPage : CURRENT_PAGE);
         model.addAttribute("recordsPerPage", recordsPerPage != null ? recordsPerPage : RECORDS_PER_PAGE);
+
+        return true;
     }
 
     /**

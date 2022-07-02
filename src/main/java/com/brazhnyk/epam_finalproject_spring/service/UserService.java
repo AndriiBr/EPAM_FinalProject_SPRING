@@ -2,6 +2,7 @@ package com.brazhnyk.epam_finalproject_spring.service;
 
 import com.brazhnyk.epam_finalproject_spring.entity.Role;
 import com.brazhnyk.epam_finalproject_spring.entity.User;
+import com.brazhnyk.epam_finalproject_spring.exception.AuthenticationError;
 import com.brazhnyk.epam_finalproject_spring.repository.UserRepo;
 import com.brazhnyk.epam_finalproject_spring.util.InputValidator;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,6 +14,7 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
+import java.util.Collections;
 import java.util.Set;
 
 @Service
@@ -90,5 +92,37 @@ public class UserService implements UserDetailsService{
         Pageable pageable = PageRequest.of(currentPage - 1, recordsPerPage);
 
         return userRepo.findAll(pageable);
+    }
+
+    /**
+     * Save new user in DB
+     * @param username - username
+     * @param email - email
+     * @param password - password
+     * @param passwordConfirm - password confirmation
+     * @return error message. Or empty if success
+     */
+    public String saveNewUser(String username, String email, String password, String passwordConfirm) throws AuthenticationError {
+        User userFromDb = userRepo.findByUsername(username);
+
+        if (userFromDb != null) {
+            return String.format("User %s is already exists!", username);
+        }
+
+        boolean isValid = InputValidator.validateRegistrationForm(username, email, password, passwordConfirm);
+
+        if(isValid) {
+            User user = new User();
+            user.setUsername(username);
+            user.setEmail(email);
+            user.setPassword(password);
+            user.setRoles(Collections.singleton(Role.ROLE_USER));
+
+            userRepo.save(user);
+        } else {
+            return "Wrong input data";
+        }
+
+        return "";
     }
 }
