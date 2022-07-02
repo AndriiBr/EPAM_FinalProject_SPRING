@@ -3,6 +3,9 @@ package com.brazhnyk.epam_finalproject_spring.util;
 import com.brazhnyk.epam_finalproject_spring.entity.Genre;
 import com.brazhnyk.epam_finalproject_spring.entity.Role;
 import com.brazhnyk.epam_finalproject_spring.entity.User;
+import io.qameta.allure.Feature;
+import io.qameta.allure.Step;
+import io.qameta.allure.Story;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -19,6 +22,7 @@ import java.util.stream.Stream;
 import static org.junit.jupiter.api.Assertions.*;
 
 @DisplayName("[Unit] Utils")
+@Feature("Utils")
 class InputValidatorTest {
 
     @BeforeAll
@@ -34,6 +38,7 @@ class InputValidatorTest {
 
     @Test
     @DisplayName("[Success] Test input data from registration form")
+    @Story("Utils - Input validator")
     void validateRegistrationForm_success() {
         assertTrue(InputValidator.validateRegistrationForm(
                 "User1",
@@ -44,6 +49,7 @@ class InputValidatorTest {
 
     @ParameterizedTest
     @DisplayName("[Fail] Test input data from registration form")
+    @Story("Utils - Input validator")
     @MethodSource("stringProviderForRegistrationForm")
     void validateRegistrationForm_fail(String username, String email, String password, String passwordConfirm) {
         assertFalse(InputValidator.validateRegistrationForm(username, email, password, passwordConfirm));
@@ -51,6 +57,7 @@ class InputValidatorTest {
 
     @Test
     @DisplayName("[Success] Test input data from new edition form")
+    @Story("Utils - Input validator")
     void validateNewEdition() {
         assertTrue(InputValidator.validateNewEdition(
                 "Test title",
@@ -62,6 +69,7 @@ class InputValidatorTest {
 
     @ParameterizedTest
     @DisplayName("[Fail] Test input data from new edition form")
+    @Story("Utils - Input validator")
     @MethodSource("stringProviderForNewEditionForm")
     void validateRegistrationForm_fail(String titleEn, String titleUa, String textEn, String textUa, String price, Genre genre) {
         assertFalse(InputValidator.validateNewEdition(titleEn, titleUa, textEn, textUa, price, genre));
@@ -69,6 +77,7 @@ class InputValidatorTest {
 
     @Test
     @DisplayName("Test money input validation")
+    @Story("Utils - Input validator")
     void validateMoney() {
         assertTrue(InputValidator.validateMoney("257"));
         assertFalse(InputValidator.validateMoney("bynet"));
@@ -78,6 +87,7 @@ class InputValidatorTest {
 
     @Test
     @DisplayName("Test genre validation")
+    @Story("Utils - Input validator")
     void validateGenre() {
         assertTrue(InputValidator.validateGenre(new Genre()));
         assertFalse(InputValidator.validateGenre(null));
@@ -85,6 +95,7 @@ class InputValidatorTest {
 
     @Test
     @DisplayName("[Success]Test number validation")
+    @Story("Utils - Input validator")
     void validateNumberValue() {
         assertTrue(InputValidator.validateNumberValue("435"));
         assertFalse(InputValidator.validateNumberValue("word"));

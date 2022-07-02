@@ -1,27 +1,21 @@
 package com.brazhnyk.epam_finalproject_spring.util;
 
-import com.brazhnyk.epam_finalproject_spring.entity.Edition;
+import io.qameta.allure.Feature;
+import io.qameta.allure.Story;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
-import org.mockito.Mock;
-import org.mockito.Mockito;
-import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
-import org.springframework.data.domain.Sort;
-import org.springframework.ui.Model;
 
-import static org.junit.jupiter.api.Assertions.*;
-import static org.mockito.ArgumentMatchers.any;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
 
 @DisplayName("[Unit] Utils")
+@Feature("Utils")
 class PaginationPresetEngineTest {
-
-    @Mock
-    private Model model;
-    private final Page<Edition> page = Page.empty();
 
     @Test
     @DisplayName("[Default pageable] Test create and fulfill pageable object")
+    @Story("Utils pagination")
     void definePageableByParam_default() {
         Pageable pageable = PaginationPresetEngine.definePageableByParam(null, null, null);
 
@@ -30,7 +24,8 @@ class PaginationPresetEngineTest {
     }
 
     @Test
-    @DisplayName("[Default pageable] Test create and fulfill pageable object")
+    @DisplayName("[OrderBy price pageable] Test create and fulfill pageable object")
+    @Story("Utils pagination")
     void definePageableByParam_with_params_1() {
         Pageable pageable = PaginationPresetEngine.definePageableByParam("2", "7", "price");
 
@@ -40,7 +35,8 @@ class PaginationPresetEngineTest {
     }
 
     @Test
-    @DisplayName("[Default pageable] Test create and fulfill pageable object")
+    @DisplayName("[OrderBy title pageable] Test create and fulfill pageable object")
+    @Story("Utils pagination")
     void definePageableByParam_with_params_2() {
         Pageable pageable = PaginationPresetEngine.definePageableByParam("3", "15", "title");
 

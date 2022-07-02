@@ -1,9 +1,9 @@
-package com.brazhnyk.epam_finalproject_spring.service;
+package com.brazhnyk.epam_finalproject_spring.service.implementation;
 
 import com.brazhnyk.epam_finalproject_spring.entity.Role;
 import com.brazhnyk.epam_finalproject_spring.entity.User;
-import com.brazhnyk.epam_finalproject_spring.exception.AuthenticationError;
 import com.brazhnyk.epam_finalproject_spring.repository.UserRepo;
+import com.brazhnyk.epam_finalproject_spring.service.IUserService;
 import com.brazhnyk.epam_finalproject_spring.util.InputValidator;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -18,7 +18,7 @@ import java.util.Collections;
 import java.util.Set;
 
 @Service
-public class UserService implements UserDetailsService{
+public class UserService implements UserDetailsService, IUserService {
 
     private static final int RECORDS_PER_PAGE = 5;
     private static final int CURRENT_PAGE = 1;
@@ -34,20 +34,12 @@ public class UserService implements UserDetailsService{
         return userRepo.findByUsername(username);
     }
 
-    /**
-     * Find user in DB
-     * @param username - username
-     * @return user entity
-     */
+    @Override
     public User findUserByUsername(String username) {
         return userRepo.findByUsername(username);
     }
 
-    /**
-     * Top up user balance
-     * @param user - user entity
-     * @param money - amount of money
-     */
+    @Override
     public void topUpBalance(User user, String money) {
         User userFromDb = userRepo.findByUsername(user.getUsername());
         int value = 0;
@@ -59,10 +51,7 @@ public class UserService implements UserDetailsService{
         userRepo.save(userFromDb);
     }
 
-    /**
-     * Block/Unblock provided user
-     * @param user - user entity
-     */
+    @Override
     public void updateUserRole(User user) {
         if (user != null) {
             Set<Role> newRoles = user.getRoles();
@@ -79,12 +68,7 @@ public class UserService implements UserDetailsService{
         }
     }
 
-    /**
-     * Prepare page pf users
-     * @param page - page number
-     * @param records - records per page
-     * @return page pf users
-     */
+    @Override
     public Page<User> getUsersPage(String page, String records) {
         int currentPage = InputValidator.validateNumberValue(page) ? Integer.parseInt(page) : CURRENT_PAGE;
         int recordsPerPage = InputValidator.validateNumberValue(records) ? Integer.parseInt(records) : RECORDS_PER_PAGE;
@@ -94,15 +78,8 @@ public class UserService implements UserDetailsService{
         return userRepo.findAll(pageable);
     }
 
-    /**
-     * Save new user in DB
-     * @param username - username
-     * @param email - email
-     * @param password - password
-     * @param passwordConfirm - password confirmation
-     * @return error message. Or empty if success
-     */
-    public String saveNewUser(String username, String email, String password, String passwordConfirm) throws AuthenticationError {
+    @Override
+    public String saveNewUser(String username, String email, String password, String passwordConfirm) {
         User userFromDb = userRepo.findByUsername(username);
 
         if (userFromDb != null) {

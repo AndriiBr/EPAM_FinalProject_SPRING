@@ -3,9 +3,12 @@ package com.brazhnyk.epam_finalproject_spring.controller;
 import com.brazhnyk.epam_finalproject_spring.entity.Edition;
 import com.brazhnyk.epam_finalproject_spring.entity.Genre;
 import com.brazhnyk.epam_finalproject_spring.entity.User;
-import com.brazhnyk.epam_finalproject_spring.service.EditionService;
-import com.brazhnyk.epam_finalproject_spring.service.GenreService;
-import com.brazhnyk.epam_finalproject_spring.service.UserService;
+import com.brazhnyk.epam_finalproject_spring.service.IEditionService;
+import com.brazhnyk.epam_finalproject_spring.service.IGenreService;
+import com.brazhnyk.epam_finalproject_spring.service.IUserService;
+import com.brazhnyk.epam_finalproject_spring.service.implementation.EditionService;
+import com.brazhnyk.epam_finalproject_spring.service.implementation.GenreService;
+import com.brazhnyk.epam_finalproject_spring.service.implementation.UserService;
 import com.brazhnyk.epam_finalproject_spring.util.InputValidator;
 import com.brazhnyk.epam_finalproject_spring.util.PaginationPresetEngine;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -38,9 +41,9 @@ public class AdminController {
 
     private static final String REDIRECT_TO_ADMIN_EDITIONS = "redirect:/admin/edition";
 
-    private final UserService userService;
-    private final EditionService editionService;
-    private final GenreService genreService;
+    private final IUserService userService;
+    private final IEditionService editionService;
+    private final IGenreService genreService;
 
     @Autowired
     public AdminController(UserService userService, EditionService editionService, GenreService genreService) {
@@ -116,7 +119,7 @@ public class AdminController {
     @PostMapping("edition/delete")
     public String deleteEdition(@RequestParam("delete_edition_id") Edition edition) {
 
-        editionService.delete(edition);
+        editionService.deleteEdition(edition);
 
         return REDIRECT_TO_ADMIN_EDITIONS;
     }

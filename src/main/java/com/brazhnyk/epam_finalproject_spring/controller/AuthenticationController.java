@@ -1,7 +1,8 @@
 package com.brazhnyk.epam_finalproject_spring.controller;
 
 import com.brazhnyk.epam_finalproject_spring.exception.AuthenticationError;
-import com.brazhnyk.epam_finalproject_spring.service.UserService;
+import com.brazhnyk.epam_finalproject_spring.service.IUserService;
+import com.brazhnyk.epam_finalproject_spring.service.implementation.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -14,7 +15,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 @RequestMapping
 public class AuthenticationController {
 
-    private final UserService userService;
+    private final IUserService userService;
 
     @Autowired
     public AuthenticationController(UserService userService) {

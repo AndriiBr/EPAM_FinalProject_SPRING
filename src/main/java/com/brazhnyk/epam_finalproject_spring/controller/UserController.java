@@ -4,10 +4,14 @@ import com.brazhnyk.epam_finalproject_spring.entity.Edition;
 import com.brazhnyk.epam_finalproject_spring.entity.Genre;
 import com.brazhnyk.epam_finalproject_spring.entity.User;
 import com.brazhnyk.epam_finalproject_spring.exception.AuthenticationError;
-import com.brazhnyk.epam_finalproject_spring.service.EditionService;
-import com.brazhnyk.epam_finalproject_spring.service.GenreService;
-import com.brazhnyk.epam_finalproject_spring.service.UserEditionService;
-import com.brazhnyk.epam_finalproject_spring.service.UserService;
+import com.brazhnyk.epam_finalproject_spring.service.IEditionService;
+import com.brazhnyk.epam_finalproject_spring.service.IGenreService;
+import com.brazhnyk.epam_finalproject_spring.service.IUserEditionService;
+import com.brazhnyk.epam_finalproject_spring.service.IUserService;
+import com.brazhnyk.epam_finalproject_spring.service.implementation.EditionService;
+import com.brazhnyk.epam_finalproject_spring.service.implementation.GenreService;
+import com.brazhnyk.epam_finalproject_spring.service.implementation.UserEditionService;
+import com.brazhnyk.epam_finalproject_spring.service.implementation.UserService;
 import com.brazhnyk.epam_finalproject_spring.util.PaginationPresetEngine;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -26,10 +30,10 @@ import java.util.List;
 @RequestMapping("/user")
 public class UserController {
 
-    private final UserService userService;
-    private final EditionService editionService;
-    private final GenreService genreService;
-    private final UserEditionService userEditionService;
+    private final IUserService userService;
+    private final IEditionService editionService;
+    private final IGenreService genreService;
+    private final IUserEditionService userEditionService;
 
     @Autowired
     public UserController(UserService userService,

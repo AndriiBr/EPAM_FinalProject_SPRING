@@ -1,16 +1,17 @@
-package com.brazhnyk.epam_finalproject_spring.service;
+package com.brazhnyk.epam_finalproject_spring.service.implementation;
 
 import com.brazhnyk.epam_finalproject_spring.entity.Edition;
 import com.brazhnyk.epam_finalproject_spring.entity.User;
 import com.brazhnyk.epam_finalproject_spring.entity.UserEdition;
 import com.brazhnyk.epam_finalproject_spring.repository.UserEditionRepo;
 import com.brazhnyk.epam_finalproject_spring.repository.UserRepo;
+import com.brazhnyk.epam_finalproject_spring.service.IUserEditionService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 @Service
-public class UserEditionService {
+public class UserEditionService implements IUserEditionService {
 
     private final UserRepo userRepo;
     private final UserEditionRepo userEditionRepo;
@@ -21,15 +22,16 @@ public class UserEditionService {
         this.userEditionRepo = userEditionRepo;
     }
 
-    public Integer unsubscribe(User user, Edition edition) {
-        return userEditionRepo.deleteAllByUserAndEdition(user, edition);
+    @Override
+    public void unsubscribe(User user, Edition edition) {
+        userEditionRepo.deleteAllByUserAndEdition(user, edition);
     }
 
-    //ToDo
-    //Test this case of transaction. Will it rollback if any operation is unsuccessful?
+    @Override
     @Transactional
     public void buyNewEdition(User user, Edition edition) {
-        int balanceResult = userRepo.findByUsername(user.getUsername()).getBalance() - edition.getPrice();
+        User userFromDb = userRepo.findByUsername(user.getUsername());
+        int balanceResult = userFromDb.getBalance() - edition.getPrice();
 
         if (balanceResult < 0) {
             return;
