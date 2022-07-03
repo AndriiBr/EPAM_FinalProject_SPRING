@@ -1,0 +1,13 @@
+<!DOCTYPE aspectj PUBLIC "-//AspectJ//DTD//EN" "http://www.eclipse.org/aspectj/dtd/aspectj.dtd">
+<aspectj>
+
+    <!-- You can also add -Xlint:ignore in order to avoid lots of '[Xlint:cantFindType]' warnings -->
+    <weaver options="-showWeaveInfo -Xlint:ignore">
+        <!-- Only weave classes in our application-specific packages -->
+        <include within="com.example.aspectj..*"/>
+        <!-- Spring issue #27650 -->
+        <!-- https://github.com/spring-projects/spring-framework/issues/27650 -->
+        <exclude within="org.springframework.boot.jdbc.DataSourceBuilder.OraclePoolDataSourceProperties"/>
+    </weaver>
+
+</aspectj>

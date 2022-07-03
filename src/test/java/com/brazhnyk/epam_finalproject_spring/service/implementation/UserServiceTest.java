@@ -3,7 +3,6 @@ package com.brazhnyk.epam_finalproject_spring.service.implementation;
 import com.brazhnyk.epam_finalproject_spring.entity.Role;
 import com.brazhnyk.epam_finalproject_spring.entity.User;
 import com.brazhnyk.epam_finalproject_spring.repository.UserRepo;
-import com.brazhnyk.epam_finalproject_spring.service.implementation.UserService;
 import io.qameta.allure.Feature;
 import io.qameta.allure.Story;
 import org.junit.jupiter.api.BeforeEach;

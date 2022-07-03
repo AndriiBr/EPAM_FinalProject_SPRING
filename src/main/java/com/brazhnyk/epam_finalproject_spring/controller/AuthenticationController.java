@@ -1,6 +1,5 @@
 package com.brazhnyk.epam_finalproject_spring.controller;
 
-import com.brazhnyk.epam_finalproject_spring.exception.AuthenticationError;
 import com.brazhnyk.epam_finalproject_spring.service.IUserService;
 import com.brazhnyk.epam_finalproject_spring.service.implementation.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -42,7 +41,7 @@ public class AuthenticationController {
                              @RequestParam("email") String email,
                              @RequestParam("password") String password,
                              @RequestParam("password_confirm") String passwordConfirm,
-                             Model model) throws AuthenticationError {
+                             Model model) {
         String result = userService.saveNewUser(username, email, password, passwordConfirm);
 
         if (!result.isEmpty()) {
