@@ -3,6 +3,7 @@ package com.brazhnyk.epam_finalproject_spring.controller;
 import com.brazhnyk.epam_finalproject_spring.service.IUserService;
 import com.brazhnyk.epam_finalproject_spring.service.implementation.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -19,6 +20,17 @@ public class AuthenticationController {
     @Autowired
     public AuthenticationController(UserService userService) {
         this.userService = userService;
+    }
+
+    @PreAuthorize("hasAnyAuthority('ROLE_USER', 'ROLE_ADMIN', 'ROLE_BLOCKED')")
+    @GetMapping("/login/success")
+    public String openLoginSuccessPage() {
+        return "login_page/loginSuccess";
+    }
+
+    @GetMapping("/login/fail")
+    public String openLoginFailPage() {
+        return "login_page/loginFail";
     }
 
     @GetMapping("/registration")
@@ -49,6 +61,6 @@ public class AuthenticationController {
             return "login_page/registrationFail";
         }
 
-        return "redirect:/login";
+        return "redirect:/registration/success";
     }
 }

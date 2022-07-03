@@ -146,7 +146,7 @@ public class AdminController {
                                 @RequestParam("file-name")MultipartFile file) throws IOException {
 
         if (edition != null) {
-            boolean result = updateEdition(edition, titleEn, titleUa, textEn, textUa, price, genre);
+            boolean result = updateEditionFields(edition, titleEn, titleUa, textEn, textUa, price, genre);
             if (result) {
                 saveImage(file, edition);
 
@@ -176,7 +176,7 @@ public class AdminController {
      * @param genre - genre
      * @return TRUE - if validation and update were success.
      */
-    private boolean updateEdition(Edition edition,
+    private boolean updateEditionFields(Edition edition,
                                String titleEn,
                                String titleUa,
                                String textEn,
@@ -203,7 +203,7 @@ public class AdminController {
      * @param edition - edition to be updated
      * @throws IOException when cannot save file
      */
-    public void saveImage(MultipartFile file, Edition edition) throws IOException {
+    private void saveImage(MultipartFile file, Edition edition) throws IOException {
         if(file != null && !file.isEmpty()) {
             File uploadDir = new File(uploadPath);
 

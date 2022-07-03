@@ -46,6 +46,7 @@ public class UserController {
         this.userEditionService = userEditionService;
     }
 
+    @PreAuthorize("hasAnyAuthority('ROLE_BLOCKED', 'ROLE_USER', 'ROLE_ADMIN')")
     @GetMapping("/wallet")
     public String openWalletPage(@AuthenticationPrincipal User user, Model model) {
         User userFromDb = userService.findUserByUsername(user.getUsername());
@@ -73,6 +74,7 @@ public class UserController {
         return "redirect:/user/wallet";
     }
 
+    @PreAuthorize("hasAnyAuthority('ROLE_BLOCKED', 'ROLE_USER', 'ROLE_ADMIN')")
     @GetMapping("/subscriptions")
     public String openSubscriptionsPage(@AuthenticationPrincipal User user,
                                         @RequestParam(name = "currentPage", required = false) String currentPage,
@@ -92,6 +94,7 @@ public class UserController {
         return "edition_page/userEditions";
     }
 
+    @PreAuthorize("hasAnyAuthority('ROLE_BLOCKED', 'ROLE_USER', 'ROLE_ADMIN')")
     @PostMapping("/subscriptions/unsubscribe")
     public String unsubscribe (@AuthenticationPrincipal User user,
                                @RequestParam(name = "unsubscribe_edition_id") Edition edition) {
