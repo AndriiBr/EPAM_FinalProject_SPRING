@@ -46,9 +46,9 @@ public class PaginationPresetEngine {
                 pageableResult = PageRequest.of(currentPage - 1, recordsPerPage, Sort.by("price").ascending());
             } else if (orderBy.equals("title")) {
                 if (lang.equals("ua")) {
-                    pageableResult = PageRequest.of(currentPage - 1, recordsPerPage, Sort.by("edition.title_ua").ascending());
+                    pageableResult = PageRequest.of(currentPage - 1, recordsPerPage, Sort.by("titleUa").ascending());
                 } else {
-                    pageableResult = PageRequest.of(currentPage - 1, recordsPerPage, Sort.by("edition.title_en").ascending());
+                    pageableResult = PageRequest.of(currentPage - 1, recordsPerPage, Sort.by("titleEn").ascending());
                 }
             }
         }

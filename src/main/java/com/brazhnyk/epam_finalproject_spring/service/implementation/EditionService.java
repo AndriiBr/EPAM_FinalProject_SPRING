@@ -8,11 +8,12 @@ import com.brazhnyk.epam_finalproject_spring.repository.EditionRepo;
 import com.brazhnyk.epam_finalproject_spring.service.IEditionService;
 import com.brazhnyk.epam_finalproject_spring.util.PaginationPresetEngine;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.i18n.LocaleContextHolder;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
-import java.util.Optional;
+import java.util.Locale;
 
 @Service
 public class EditionService implements IEditionService {
@@ -25,12 +26,12 @@ public class EditionService implements IEditionService {
     }
 
     @Override
-    public Page<Edition> findAll(String page, String records,Genre genre, String orderBy) {
+    public Page<Edition> findAll(String page, String records, Genre genre, String orderBy) {
 
         Pageable pageable = PaginationPresetEngine.definePageableByParam(page, records, orderBy);
 
         if (genre == null) {
-            return editionRepo.findAll(pageable);
+            return editionRepo.findAllWithPagination(pageable);
         } else {
             return editionRepo.findAllByGenre(genre, pageable);
         }
@@ -58,7 +59,7 @@ public class EditionService implements IEditionService {
 
         if (genre == null) {
             if (user == null) {
-                return editionRepo.findAll(pageable);
+                return editionRepo.findAllWithPagination(pageable);
             } else {
                 return editionRepo.findAllByUserIdNotIn(user.getId(), pageable);
             }
@@ -73,7 +74,7 @@ public class EditionService implements IEditionService {
     }
 
     @Override
-    public Page<Edition> findAllOrdered(User user, String page, String records,Genre genre, String orderBy) throws AuthenticationError {
+    public Page<Edition> findAllOrdered(User user, String page, String records, Genre genre, String orderBy) throws AuthenticationError {
 
         Pageable pageable = PaginationPresetEngine.definePageableByParam(page, records, orderBy);
 
@@ -85,6 +86,21 @@ public class EditionService implements IEditionService {
             } else {
                 return editionRepo.findAllByGenreAndUserIdIn(genre, user.getId(), pageable);
             }
+        }
+    }
+
+    @Override
+    public Page<Edition> searchByTitle(String text, String page, String records, String orderBy) {
+
+        Pageable pageable = PaginationPresetEngine.definePageableByParam(page, records, orderBy);
+
+        Locale locale = LocaleContextHolder.getLocale();
+        String lang = locale.getLanguage();
+
+        if (lang.equals("ua")) {
+            return editionRepo.findByTitleUaContains(text, pageable);
+        } else {
+            return editionRepo.findByTitleEnContains(text, pageable);
         }
     }
 }

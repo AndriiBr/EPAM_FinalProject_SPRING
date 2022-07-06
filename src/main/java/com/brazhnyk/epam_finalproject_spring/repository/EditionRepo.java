@@ -13,10 +13,8 @@ public interface EditionRepo extends JpaRepository<Edition, Long> {
 
     List<Edition> findAll();
 
-    @Query(
-            value = "select * from edition",
-            nativeQuery = true)
-    Page<Edition> findAll(Pageable pageable);
+    @Query("select e from Edition e")
+    Page<Edition> findAllWithPagination (Pageable pageable);
 
     @Query(
             value = "select * from edition where genre_id = ?",
@@ -42,4 +40,8 @@ public interface EditionRepo extends JpaRepository<Edition, Long> {
             value = "select * from edition where genre_id = ? and id in(select edition_id from user_edition where user_id = ?)",
             nativeQuery = true)
     Page<Edition> findAllByGenreAndUserIdIn(Genre genre, Long userId, Pageable pageable);
+
+    Page<Edition> findByTitleEnContains(String title, Pageable pageable);
+
+    Page<Edition> findByTitleUaContains(String title, Pageable pageable);
 }

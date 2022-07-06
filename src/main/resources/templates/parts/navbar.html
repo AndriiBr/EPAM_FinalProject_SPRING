@@ -68,10 +68,10 @@
 
                     </ul>
 
-                    <form class="d-flex search_form" method="get"
+                    <form class="d-flex search_form" method="get" action="/search"
                           onsubmit="executeUrlParameter('search', document.getElementById('search').value)">
                         <input class="form-control me-2" type="text" id="search" name="search"
-                               placeholder="Search message" aria-label="Search">
+                               th:placeholder="#{navbar.search_msg}" aria-label="Search">
                         <button class="btn btn-dark pr-3" type="submit"
                                 th:text="#{navbar.search}">
                         </button>

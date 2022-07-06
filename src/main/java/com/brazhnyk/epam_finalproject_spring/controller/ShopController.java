@@ -84,9 +84,27 @@ public class ShopController {
 
     @PreAuthorize("hasAnyAuthority('ROLE_USER', 'ROLE_ADMIN')")
     @PostMapping("/buy")
-    public String buyEdition(@AuthenticationPrincipal User user, @RequestParam(name = "buy_edition_id") Edition edition) {
+    public String buyEdition(@AuthenticationPrincipal User user,
+                             @RequestParam(name = "buy_edition_id") Edition edition) {
        userEditionService.buyNewEdition(user, edition);
 
         return "redirect:/";
+    }
+
+    @GetMapping("search")
+    public String searchByTitle(@RequestParam(name = "search") String text,
+                                @RequestParam(name = "currentPage", required = false) String currentPage,
+                                @RequestParam(name = "recordsPerPage", required = false) String recordsPerPage,
+                                @RequestParam(name = "orderBy", required = false) String orderBy,
+                                Model model) {
+        Page<Edition> page = editionService.searchByTitle(text, currentPage, recordsPerPage, orderBy);
+        model.addAttribute("editionList", page);
+
+        List<Genre> genreList = genreService.findAllGenres();
+        model.addAttribute("genreList", genreList);
+
+        PaginationPresetEngine.updateModelForPagination(model, page, currentPage, recordsPerPage);
+
+        return "edition_page/mainEditions";
     }
 }

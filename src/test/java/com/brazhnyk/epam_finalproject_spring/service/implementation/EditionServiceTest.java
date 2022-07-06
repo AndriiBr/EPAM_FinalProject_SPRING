@@ -51,7 +51,7 @@ class EditionServiceTest {
 
     @BeforeEach
     public void setUp() {
-        Mockito.when(editionRepo.findAll(any(Pageable.class))).thenReturn(page);
+        Mockito.when(editionRepo.findAllWithPagination(any(Pageable.class))).thenReturn(page);
         Mockito.when(editionRepo.findAllByGenre(any(Genre.class), any(Pageable.class))).thenReturn(page);
         Mockito.when(editionRepo.save(any())).thenReturn(new Edition());
         Mockito.doNothing().when(editionRepo).delete(any());
@@ -74,7 +74,7 @@ class EditionServiceTest {
     void findAll_without_genre() {
         editionService.findAll("1", "5", null, "price");
         Mockito.verify(editionRepo, Mockito.times(1))
-                .findAll(any(Pageable.class));
+                .findAllWithPagination(any(Pageable.class));
 
         assertEquals(3, editionService.findAll("1", "5", null, "price").getTotalElements());
     }
@@ -162,7 +162,7 @@ class EditionServiceTest {
     @DisplayName("[Null user/genre] Find not ordered editions")
     @Story("Edition Service")
     void findAllNotOrdered_null_user_genre() {
-        Mockito.when(editionRepo.findAll(any(Pageable.class)))
+        Mockito.when(editionRepo.findAllWithPagination(any(Pageable.class)))
                 .thenReturn(page);
 
         assertEquals(3, editionService
@@ -170,7 +170,7 @@ class EditionServiceTest {
                 .getTotalElements());
 
         Mockito.verify(editionRepo, Mockito.times(1))
-                .findAll(PageRequest.of(0, 3));
+                .findAllWithPagination(PageRequest.of(0, 3));
     }
 
     @Test

@@ -51,4 +51,14 @@ public interface IEditionService {
      * @throws AuthenticationError - if user not authorized
      */
     Page<Edition> findAllOrdered(User user, String page, String records,Genre genre, String orderBy) throws AuthenticationError;
+
+    /**
+     * Find editions in DB containing title
+     * @param text - title fragment
+     * @param page - number of required page
+     * @param records - number of records per page
+     * @param orderBy - orderBy sort filter
+     * @return list of editions
+     */
+    Page<Edition> searchByTitle(String text, String page, String records, String orderBy);
 }
